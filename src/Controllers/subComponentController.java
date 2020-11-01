@@ -13,6 +13,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -29,7 +30,12 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import entities.Component;
+import entities.SubComponent;
 
 public class subComponentController implements Initializable {
 
@@ -80,25 +86,60 @@ public class subComponentController implements Initializable {
 
 	@FXML
 	private Pane lsubComponentPane;
+	
 
+    @FXML
+    Label idlbl;
+    
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		Node[] nodes = new Node[10];
+		manageCompController mcc = new manageCompController();
+		int id = mcc.getComp_id() + 1;
+		ArrayList<SubComponent> scAL = new ArrayList<SubComponent>();
+		ResultSet rs = null;
+		MySQLConnection db = new MySQLConnection();
+		String dbQuery;
+		// Step 1 - connect to database
+		db.getConnection();
+		// step 2 - declare the SQL statement
+//		System.out.println(id);
+		dbQuery = "SELECT * FROM 2x01_db.subcomponent WHERE comp_id="+id+";";
+		// step 3 - using DBControlle readRequest method
+		rs = db.readRequest(dbQuery);
+		try {
+			while (rs.next()) {
+				SubComponent sc = new SubComponent();
+				SubComponent subComponent = sc.convertToSubComponent(rs);
+				scAL.add(subComponent);
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// step 4 - close connection
+		db.terminate();
+		
+		Node[] nodes = new Node[scAL.size()];
 		for (int i = 0; i < nodes.length; i++) {
 			try {
-
 				final int j = i;
 				nodes[i] = FXMLLoader.load(getClass().getResource("/Templates/component.fxml"));
+				Label lbl1 = (Label) nodes[i].lookup("#compNameLbl");
+				Label lbl2 = (Label) nodes[i].lookup("#compDescLbl");
+				Label lbl3 = (Label) nodes[i].lookup("#weightLbl");
+				if(lbl1 != null && lbl2!=null && lbl3 !=null) {
+					lbl1.setText(scAL.get(i).getSubcomp_name());
+					lbl2.setText(scAL.get(i).getSubcomp_desc());
+					lbl3.setText(String.valueOf(scAL.get(i).getSubcomp_weight()));
+				}
 
 				// give the items some effect
-
 				nodes[i].setOnMouseEntered(event -> {
 					nodes[j].setStyle("-fx-background-color : #E9E9E9");
 				});
 				nodes[i].setOnMouseExited(event -> {
 					nodes[j].setStyle("-fx-background-color : #FFFFFF");
 				});
-
 				nodes[i].setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent mouseEvent) {

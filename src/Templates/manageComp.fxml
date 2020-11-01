@@ -51,24 +51,19 @@
                                     </HBox>
                                     <HBox prefHeight="18.0" prefWidth="822.0">
                                        <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ColumnName">
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Component Name">
                                              <HBox.margin>
-                                                <Insets left="60.0" right="30.0" />
+                                                <Insets left="80.0" />
                                              </HBox.margin>
                                           </Text>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ColumnName1">
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description">
                                              <HBox.margin>
-                                                <Insets left="60.0" />
+                                                <Insets left="150.0" />
                                              </HBox.margin>
                                           </Text>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ColumnName2">
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Weightage">
                                              <HBox.margin>
-                                                <Insets left="60.0" />
-                                             </HBox.margin>
-                                          </Text>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ColumnName3">
-                                             <HBox.margin>
-                                                <Insets left="50.0" />
+                                                <Insets left="150.0" />
                                              </HBox.margin>
                                           </Text>
                                        </children>

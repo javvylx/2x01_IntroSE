@@ -1,4 +1,6 @@
 package Controllers;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -28,7 +30,12 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import entities.Component;
+import entities.Student;
 
 public class Controller implements Initializable {
 
@@ -38,6 +45,9 @@ public class Controller implements Initializable {
 	@FXML
 	private VBox componentVB;
 
+    @FXML
+    private Button welcometxt;
+    
 	@FXML
 	private Pane loginPane;
 
@@ -82,7 +92,32 @@ public class Controller implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		Node[] nodes = new Node[10];
+		login lg = new login();
+		System.out.println(lg.getUser());
+		welcometxt.setText(welcometxt.getText()+ lg.getUser());
+		ArrayList<Component> compAL = new ArrayList<Component>();
+		ResultSet rs = null;
+		MySQLConnection db = new MySQLConnection();
+		String dbQuery;
+		// Step 1 - connect to database
+		db.getConnection();
+		// step 2 - declare the SQL statement
+		dbQuery = "SELECT * FROM 2x01_db.component;";
+		// step 3 - using DBControlle readRequest method
+		rs = db.readRequest(dbQuery);
+		try {
+			while (rs.next()) {
+				Component cp = new Component();
+				Component component = cp.convertToComponent(rs);
+				compAL.add(component);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// step 4 - close connection
+		db.terminate();
+		
+		Node[] nodes = new Node[compAL.size()];
 		for (int i = 0; i < nodes.length; i++) {
 			try {
 
@@ -143,6 +178,8 @@ public class Controller implements Initializable {
 			}
 		}
 	}
+	
+
 
 	public void weightageMethod(ActionEvent actionEvent) {
 		try {
