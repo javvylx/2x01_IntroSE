@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="mainStage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1080" style="-fx-background-color: #96CAFF;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.subComponentController">
+<AnchorPane fx:id="mainStage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1080" style="-fx-background-color: #96CAFF;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.studentViewSubComponent">
    <children>
       <Pane id="dashboardPane" fx:id="dashboardPane" prefHeight="600.0" prefWidth="1080.0" style="visibility: true;">
          <children>
@@ -25,7 +25,7 @@
                      <children>
                         <VBox layoutX="14.0" prefHeight="600.0" prefWidth="822.0" style="-fx-background-color: #FFFFFF;">
                            <children>
-                              <Text id="pageHeader" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-padding: 10px; -fx-border-insets: 10px; -fx-background-insets: 10px;" text="&lt;comp name here&gt;" wrappingWidth="483">
+                              <Text id="pageHeader" fx:id="moduleLbl" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-padding: 10px; -fx-border-insets: 10px; -fx-background-insets: 10px;" text="&lt;comp name here&gt;" wrappingWidth="483">
                                  <font>
                                     <Font name="Arial" size="38.0" />
                                  </font>
@@ -39,7 +39,7 @@
                                  </VBox.margin>
                               </Text>
                               <Separator prefHeight="0.0" prefWidth="822.0" />
-                              <TextArea editable="false" maxHeight="-Infinity" prefHeight="91.0" prefWidth="767.0" text="THIS IS WHERE THE FEEDBACK WILL BE" />
+                              <TextArea fx:id="feedbackTxtArea" editable="false" maxHeight="-Infinity" prefHeight="91.0" prefWidth="767.0" text="THIS IS WHERE THE FEEDBACK WILL BE" />
                               <TableView prefHeight="411.0" prefWidth="822.0">
                                 <columns>
                                   <TableColumn prefWidth="150.0" text="Sub-component Name" />
@@ -62,7 +62,7 @@
                         <Image url="@/images/SIT-Primary-logo-722x407.png" />
                      </image>
                   </ImageView>
-                  <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="258.0" style="-fx-background-color: #3F2B63;" styleClass="navbut" text="Welcome, Lorem Ipsum" textFill="WHITE" />
+                  <Button fx:id="welcomeTxt" mnemonicParsing="false" prefHeight="46.0" prefWidth="258.0" style="-fx-background-color: #3F2B63;" styleClass="navbut" text="Welcome, " textFill="WHITE" />
                   <Button id="btnHome" fx:id="btnHome" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Home" textFill="WHITE" />
                   <Button id="btnSO" fx:id="btnSignOut" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Sign Out" textFill="WHITE" />
                </children>

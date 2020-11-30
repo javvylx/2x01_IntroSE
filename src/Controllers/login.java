@@ -96,8 +96,8 @@ public class login{
 			if (exist == true) {
 				Parent dashboard;
 				try {
-					dashboard = FXMLLoader.load(getClass().getResource("/Templates/dashboard.fxml"));
-					//dashboard = FXMLLoader.load(getClass().getResource("/Templates/dashboard_student.fxml"));
+//					dashboard = FXMLLoader.load(getClass().getResource("/Templates/dashboard.fxml"));
+					dashboard = FXMLLoader.load(getClass().getResource("/Templates/dashboard_student.fxml"));
 					this.user = l.getLect_fname()+ " " + l.getLect_lname();
 					Scene dashboardScene = new Scene(dashboard);
 					Stage dashboardStage = (Stage) ((Node) actionEvent.getSource()).getScene()

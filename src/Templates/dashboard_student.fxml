@@ -133,8 +133,8 @@
                         <Image url="@/images/SIT-Primary-logo-722x407.png" />
                      </image>
                   </ImageView>
-                  <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="258.0" style="-fx-background-color: #3F2B63;" styleClass="navbut" text="Welcome, " textFill="WHITE" />
-                  <Button id="btnVS" fx:id="btnViewStudent" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="View Grades" textFill="WHITE" />
+                  <Button fx:id="welcomeTxt" mnemonicParsing="false" prefHeight="46.0" prefWidth="258.0" style="-fx-background-color: #3F2B63;" styleClass="navbut" text="Welcome, " textFill="WHITE" />
+                  <Button id="btnVS" fx:id="btnViewGrades" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="View Grades" textFill="WHITE" />
                   <Button id="btnSO" fx:id="btnSignOut" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Sign Out" textFill="WHITE" />
                </children>
             </VBox>
