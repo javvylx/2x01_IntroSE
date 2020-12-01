@@ -15,7 +15,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -74,6 +77,24 @@ public class dashboard_students implements Initializable {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+		}
+    	
+    	if (actionEvent.getSource() == btnSignOut) {
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Confirm logout? ", ButtonType.YES, ButtonType.CANCEL);
+			alert.showAndWait();
+			if (alert.getResult() == ButtonType.YES) {
+				Parent login;
+				try {
+					login = FXMLLoader.load(getClass().getResource("/Templates/login.fxml"));
+					Scene loginScene = new Scene(login);
+					Stage loginStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+					loginStage.setScene(loginScene);
+					loginStage.show();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 
