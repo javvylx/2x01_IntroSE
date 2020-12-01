@@ -40,13 +40,12 @@
                               </Text>
                               <Separator prefHeight="0.0" prefWidth="822.0" />
                               <TextArea fx:id="feedbackTxtArea" editable="false" maxHeight="-Infinity" prefHeight="91.0" prefWidth="767.0" text="THIS IS WHERE THE FEEDBACK WILL BE" />
-                              <TableView prefHeight="411.0" prefWidth="822.0">
+                              <TableView fx:id="subCompTable" prefHeight="411.0" prefWidth="822.0">
                                 <columns>
-                                  <TableColumn prefWidth="150.0" text="Sub-component Name" />
-                                  <TableColumn minWidth="0.0" prefWidth="0.0" text="C2" />
-                                    <TableColumn prefWidth="166.0" text="Marks" />
-                                    <TableColumn prefWidth="197.0" text="Weightage" />
-                                    <TableColumn prefWidth="174.0" text="Description" />
+									<TableColumn fx:id="scNameCol" prefWidth="150.0" text="Sub-component Name" />
+                                    <TableColumn fx:id="marksCol" prefWidth="166.0" text="Marks" />
+                                    <TableColumn fx:id="weightageCol" prefWidth="197.0" text="Weightage" />
+                                    <TableColumn fx:id="descCol" prefWidth="174.0" text="Description" />
                                 </columns>
                               </TableView>
                            </children>
