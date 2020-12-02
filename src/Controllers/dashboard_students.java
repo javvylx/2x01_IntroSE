@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Collections;
 
 import entities.Component;
 import javafx.beans.binding.Bindings;
@@ -162,7 +163,79 @@ public class dashboard_students implements Initializable {
         }
 		
 	 public void startPressed() {
-		 	hundredpercentile();
+ 		Double studentGrade = 0.0;
+ 		
+		Component comp2 = new Component();
+	 	ArrayList<Component> compAL = comp2.retrieveAllComponents();
+	 		
+	 	// Step 1 - connect to database
+ 		ArrayList<Double> gradesList = new ArrayList<Double>();
+ 		MySQLConnection db = new MySQLConnection();
+        db.getConnection();
+        ResultSet rs = null;
+        String dbQuery;
+        dbQuery = "SELECT stu_id FROM 2x01_db.student";
+        rs = db.readRequest(dbQuery);
+        try {
+            while (rs.next()) {
+    	 		for(Component c : compAL) {
+    	 			//run subcomponent binding
+//    	 			System.out.println("Testing for comp id: "+ c.getComp_id());
+    	 			c.populateSubComponentList();
+//    	 			System.out.println("Populated... Querying Grades for 1902128");	
+//    	 			System.out.println("Grade's HEREEEEEEEEEEE"+c.getGrade("1902128"));
+    	 			//if (rs.getString("stu_id") == same as student id);
+    	 			//studentGrade == c.getGrade(rs.getString("stu_id"))
+    	 			// gradesList.add(studentGrade)
+    	 			//continue
+    	 			
+    	 			double grades = c.getGrade(rs.getString("stu_id"));
+    	 			System.out.println(grades);
+    	 			if (Double.isNaN(grades) == false) {
+    	 				gradesList.add(grades);
+    	 			}
+    	 		}
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        // step 4 - close connection
+        db.terminate();
+        
+        Collections.sort(gradesList);
+        studentGrade = 67.0;
+        double last = gradesList.get(0);
+        double top = gradesList.get(gradesList.size()-1);
+        double tf = ((top - last) * 0.25) + last;
+        double f = ((top - last) * 0.5) + last;
+        double sf = ((top - last) * 0.75) + last;
+        
+        System.out.println("Last: " + last);
+        System.out.println("Top: " + top);
+        System.out.println("TF: " + tf);
+        System.out.println("F: " + f);
+        System.out.println("SF: " + sf);
+        if (gradesList.size() == 0) {
+        	//error message
+        	System.out.println("Error dumbass!");
+        } 
+        else if (studentGrade == last) {
+        	zeropercentile();
+        }
+        else if (studentGrade == top) {
+        	hundredpercentile();
+        }
+        else if (studentGrade <= tf) {
+        	twentyfivepercentile();
+        }
+        else if (studentGrade > tf && studentGrade <= f) {
+        	fiftypercentile();
+        }
+        else if (studentGrade > f && studentGrade <= sf) {
+        	seventyfivepercentile();
+        }
+
 		 	displayStuFeedbackField.setText(retrieveFeedback());
 		 	displayStuFeedbackField.setVisible(true);
 		 	displayStuFeedbackField.getAlignment();
