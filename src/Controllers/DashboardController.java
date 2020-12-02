@@ -1,3 +1,4 @@
+
 package Controllers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -28,16 +30,22 @@ import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Scanner;
+import java.util.prefs.Preferences;
 
 import entities.Component;
+import entities.Lecturer;
 import entities.Student;
+import entities.User;
 
-public class Controller implements Initializable {
+public class DashboardController implements Initializable {
 
 	@FXML
 	private AnchorPane mainStage;
@@ -88,44 +96,27 @@ public class Controller implements Initializable {
 	private Button btnSignOut;
 
 	@FXML
+	private Button welcomeBtn;
+
+	@FXML
 	private Pane lsubComponentPane;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		login lg = new login();
-		System.out.println(lg.getUser());
-		welcometxt.setText(welcometxt.getText()+ lg.getUser());
-		ArrayList<Component> compAL = new ArrayList<Component>();
-		ResultSet rs = null;
-		MySQLConnection db = new MySQLConnection();
-		String dbQuery;
-		// Step 1 - connect to database
-		db.getConnection();
-		// step 2 - declare the SQL statement
-		dbQuery = "SELECT * FROM 2x01_db.component;";
-		// step 3 - using DBControlle readRequest method
-		rs = db.readRequest(dbQuery);
-		try {
-			while (rs.next()) {
-				Component cp = new Component();
-				Component component = cp.convertToComponent(rs);
-				compAL.add(component);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		// step 4 - close connection
-		db.terminate();
-		
+		CreateText ct = new CreateText();
+		String id = ct.getText();
+		User ul = new Lecturer();
+		String name = ul.getNameByID(id);
+		welcomeBtn.setText("Welcome, " + name);
+		Component comp = new Component();
+		ArrayList<Component> compAL = comp.retrieveAllComponents();
 		Node[] nodes = new Node[compAL.size()];
 		for (int i = 0; i < nodes.length; i++) {
 			try {
 
 				final int j = i;
 				nodes[i] = FXMLLoader.load(getClass().getResource("/Templates/component.fxml"));
-
 				// give the items some effect
-
 				nodes[i].setOnMouseEntered(event -> {
 					nodes[j].setStyle("-fx-background-color : #E9E9E9");
 				});
@@ -138,18 +129,6 @@ public class Controller implements Initializable {
 					public void handle(MouseEvent mouseEvent) {
 						if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 							if (mouseEvent.getClickCount() == 2) {
-//                            	try {
-//                            		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DialogModifyDelete.fxml"));
-//                            		Parent root1 = (Parent) fxmlLoader.load();
-//                            		Stage stage = new Stage();
-//                            		stage.initModality(Modality.APPLICATION_MODAL);
-//                            		stage.initOwner(mainStage.getScene().getWindow());
-//                            		stage.setTitle("Modify Component");
-//                            		stage.setScene(new Scene(root1));
-//                            		stage.show();
-//                            	}catch(Exception e) {
-
-//                            	}
 								Parent subComponent;
 								try {
 									subComponent = FXMLLoader.load(getClass().getResource("/Templates/subComponent.fxml"));

@@ -43,11 +43,11 @@
                               <Separator prefHeight="0.0" prefWidth="822.0" />
                               <TableView fx:id="studentListTable" prefHeight="492.0" prefWidth="800.0">
                                 <columns>
-                                    <TableColumn fx:id="adminNoCol" prefWidth="75.0" text="Admin No" />
-                                  <TableColumn fx:id="fNameCol" prefWidth="204.79998475313187" text="First Name" />
-                                  <TableColumn fx:id="lNameCol" minWidth="0.0" prefWidth="199.2000274658203" text="Last Name" />
-                                    <TableColumn fx:id="emailCol" minWidth="0.0" prefWidth="216.800048828125" text="Email" />
-                                    <TableColumn fx:id="mobileCol" minWidth="0.0" prefWidth="195.2000732421875" text="Mobile" />
+                                  <TableColumn fx:id="adminNoCol" prefWidth="150.0" text="Student ID" />
+                                  <TableColumn fx:id="fNameCol" minWidth="0.0" prefWidth="150.0" text="First Name" />
+                                    <TableColumn fx:id="lNameCol" minWidth="0.0" prefWidth="150.0" text="Last Name" />
+                                    <TableColumn fx:id="emailCol" minWidth="0.0" prefWidth="200.0" text="Email" />
+                                    <TableColumn fx:id="mobileCol" prefWidth="160.0" text="Contact Number" />
                                 </columns>
                                  <VBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="30.0" />
@@ -65,7 +65,7 @@
                         <Image url="@/images/SIT-Primary-logo-722x407.png" />
                      </image>
                   </ImageView>
-                  <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="258.0" style="-fx-background-color: #3F2B63;" styleClass="navbut" text="Welcome, Lorem Ipsum" textFill="WHITE" />
+                  <Button fx:id="welcomeBtn" mnemonicParsing="false" prefHeight="46.0" prefWidth="258.0" style="-fx-background-color: #3F2B63;" styleClass="navbut" text="Welcome, Lorem Ipsum" textFill="WHITE" />
                   <Button id="btnHome" fx:id="btnHome" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Home" textFill="WHITE" />
                   <Button id="btnMC" fx:id="btnManageCom" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Manage Components" textFill="WHITE" />
                   <Button id="btnVS" fx:id="btnViewStudent" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="View Students" textFill="WHITE" />

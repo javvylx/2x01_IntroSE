@@ -6,6 +6,46 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="D:/School/Year 2/2.1/ICT2201_Introduction_to_Software_Engineering/Project/javafx-sdk-15.0.1/lib/javafx.base.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/School/Year 2/2.1/ICT2201_Introduction_to_Software_Engineering/Project/javafx-sdk-15.0.1/lib/javafx.controls.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/School/Year 2/2.1/ICT2201_Introduction_to_Software_Engineering/Project/javafx-sdk-15.0.1/lib/javafx.fxml.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/School/Year 2/2.1/ICT2201_Introduction_to_Software_Engineering/Project/javafx-sdk-15.0.1/lib/javafx.graphics.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/School/Year 2/2.1/ICT2201_Introduction_to_Software_Engineering/Project/javafx-sdk-15.0.1/lib/javafx.media.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/School/Year 2/2.1/ICT2201_Introduction_to_Software_Engineering/Project/javafx-sdk-15.0.1/lib/javafx.swing.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/School/Year 2/2.1/ICT2201_Introduction_to_Software_Engineering/Project/javafx-sdk-15.0.1/lib/javafx.web.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/School/Year 2/2.1/ICT2201_Introduction_to_Software_Engineering/Project/javafx-sdk-15.0.1/lib/javafx-swt.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector J 8.0/mysql-connector-java-8.0.22.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>

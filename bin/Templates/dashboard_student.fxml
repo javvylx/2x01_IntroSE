@@ -14,13 +14,17 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="mainStage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1080" style="-fx-background-color: #96CAFF;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.manageCompController">
+<AnchorPane fx:id="mainStage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1080.0" style="-fx-background-color: #96CAFF;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.dashboard_students">
    <children>
       <Pane id="dashboardPane" fx:id="dashboardPane" prefHeight="600.0" prefWidth="1080.0" style="visibility: true;">
          <children>
             <StackPane layoutX="257.0" prefHeight="600.0" prefWidth="823.0">
                <children>
-                  <Pane fx:id="lManageCPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF; visibility: true;">
+                  <Pane fx:id="lViewStudentsPane" prefHeight="635.0" prefWidth="823.0" style="visibility: false;">
+                     <StackPane.margin>
+                        <Insets bottom="10.0" />
+                     </StackPane.margin></Pane>
+                  <Pane fx:id="lManageCPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF; visibility: false;">
                      <children>
                         <VBox prefHeight="600.0" prefWidth="822.0" style="-fx-background-color: #FFFFFF;">
                            <children>
@@ -88,6 +92,38 @@
                         </VBox>
                      </children>
                   </Pane>
+                  <Pane fx:id="lHomePagePane" prefHeight="200.0" prefWidth="200.0" style="visibility: true;">
+                     <children>
+                        <VBox prefHeight="600.0" prefWidth="822.0" style="-fx-background-color: #FFFFFF;">
+                           <children>
+                              <Text id="pageHeader" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-padding: 10px; -fx-border-insets: 10px; -fx-background-insets: 10px;" text="Lorem Ipsum" wrappingWidth="483">
+                                 <font>
+                                    <Font name="Arial" size="38.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="30.0" top="20.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text id="siteMap" strokeType="OUTSIDE" strokeWidth="0.0" text="Site Map" wrappingWidth="429.33673095703125">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="30.0" top="10.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Separator prefHeight="0.0" prefWidth="822.0" />
+                              <HBox prefHeight="503.0" prefWidth="822.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" prefHeight="500.0" prefWidth="551.0" style="-fx-background-color: #FFFFFF;" text="For charts and analysis graph (FOR LECTURER)" />
+                                    <ScrollPane prefHeight="503.0" prefWidth="273.0">
+                                       <content>
+                                          <VBox prefHeight="502.0" prefWidth="256.0" />
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </Pane>
                </children>
             </StackPane>
             <VBox prefHeight="600.0" prefWidth="257.0" style="-fx-background-color: #3F2B63;">
@@ -97,10 +133,8 @@
                         <Image url="@/images/SIT-Primary-logo-722x407.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="welcomeBtn" mnemonicParsing="false" prefHeight="46.0" prefWidth="258.0" style="-fx-background-color: #3F2B63;" styleClass="navbut" text="Welcome, Lorem Ipsum" textFill="WHITE" />
-                  <Button id="btnHome" fx:id="btnHome" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Home" textFill="WHITE" />
-                  <Button id="btnMC" fx:id="btnManageCom" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Manage Components" textFill="WHITE" />
-                  <Button id="btnVS" fx:id="btnViewStudent" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="View Students" textFill="WHITE" />
+                  <Button fx:id="welcomeTxt" mnemonicParsing="false" prefHeight="46.0" prefWidth="258.0" style="-fx-background-color: #3F2B63;" styleClass="navbut" text="Welcome, " textFill="WHITE" />
+                  <Button id="btnVS" fx:id="btnViewGrades" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="View Grades" textFill="WHITE" />
                   <Button id="btnSO" fx:id="btnSignOut" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Sign Out" textFill="WHITE" />
                </children>
             </VBox>

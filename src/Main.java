@@ -9,7 +9,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Pane;
 
-public class Main extends Application {
+public class main extends Application {
 	private double x, y;
 
 	public static void main(String[] args) {
@@ -18,7 +18,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Pane homepane = FXMLLoader.load(Main.class.getResource("/Templates/login.fxml"));
+		Pane homepane = FXMLLoader.load(main.class.getResource("/Templates/login.fxml"));
 		primaryStage.setOnCloseRequest(e -> {
 			e.consume();
 			closeProgram(primaryStage);

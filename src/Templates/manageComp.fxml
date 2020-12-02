@@ -40,33 +40,32 @@
                               <Separator prefHeight="0.0" prefWidth="822.0" />
                               <VBox prefHeight="505.0" prefWidth="822.0">
                                  <children>
-                                    <HBox prefHeight="58.0" prefWidth="822.0">
-                                       <children>
-                                          <Button fx:id="btnAssWeightage" mnemonicParsing="false" onAction="#weightageMethod" prefHeight="30.0" prefWidth="125.0" stylesheets="@/CSS/application.css" text="Assign Weightage">
-                                             <HBox.margin>
-                                                <Insets left="688.0" top="5.0" />
-                                             </HBox.margin>
-                                          </Button>
-                                       </children>
-                                    </HBox>
                                     <HBox prefHeight="18.0" prefWidth="822.0">
                                        <children>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Component Name">
                                              <HBox.margin>
-                                                <Insets left="80.0" />
+                                                <Insets left="60.0" right="30.0" />
                                              </HBox.margin>
                                           </Text>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description">
                                              <HBox.margin>
-                                                <Insets left="150.0" />
+                                                <Insets left="75.0" />
                                              </HBox.margin>
                                           </Text>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Weightage">
                                              <HBox.margin>
-                                                <Insets left="150.0" />
+                                                <Insets left="225.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Visibility">
+                                             <HBox.margin>
+                                                <Insets left="100.0" />
                                              </HBox.margin>
                                           </Text>
                                        </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" top="10.0" />
+                                       </VBox.margin>
                                     </HBox>
                                     <ScrollPane prefHeight="463.0" prefWidth="822.0">                                      
                                       <content>
@@ -77,6 +76,18 @@
 					                      </VBox>
 					                   </content>
                                     </ScrollPane>
+                                    <HBox prefHeight="58.0" prefWidth="822.0">
+                                       <children>
+                                          <Button fx:id="btnSaveChanges" mnemonicParsing="false" prefHeight="30.0" prefWidth="125.0" stylesheets="@/CSS/application.css" text="Set Visibility">
+                                             <HBox.margin>
+                                                <Insets left="688.0" top="5.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" />
+                                       </VBox.margin>
+                                    </HBox>
                                  </children>
                               </VBox>
                            </children>
@@ -92,7 +103,7 @@
                         <Image url="@/images/SIT-Primary-logo-722x407.png" />
                      </image>
                   </ImageView>
-                  <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="258.0" style="-fx-background-color: #3F2B63;" styleClass="navbut" text="Welcome, Lorem Ipsum" textFill="WHITE" />
+                  <Button fx:id="welcomeBtn" mnemonicParsing="false" prefHeight="46.0" prefWidth="258.0" style="-fx-background-color: #3F2B63;" styleClass="navbut" text="Welcome, Lorem Ipsum" textFill="WHITE" />
                   <Button id="btnHome" fx:id="btnHome" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Home" textFill="WHITE" />
                   <Button id="btnMC" fx:id="btnManageCom" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Manage Components" textFill="WHITE" />
                   <Button id="btnVS" fx:id="btnViewStudent" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="View Students" textFill="WHITE" />

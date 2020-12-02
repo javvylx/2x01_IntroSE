@@ -9,6 +9,8 @@ import java.util.ResourceBundle;
 import entities.Component;
 import entities.Student;
 import entities.SubComponent;
+import entities.Subcomponent_marks;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,43 +41,51 @@ import javafx.stage.Stage;
 
 public class studentViewSubComponent implements Initializable{
     
+ 	@FXML
+	private AnchorPane mainStage;
+	
 	@FXML
-    private AnchorPane mainStage;
+	private Pane dashboardPane;
+	
+	@FXML
+	private Pane lsubComponentPane;
+	
+	@FXML
+	private Text moduleLbl;
+	
+	@FXML
+	private TextArea feedbackTxtArea;
+	
+	@FXML
+	private TableView<SubComponent> subCompTable;
+	
+	@FXML
+	private TableColumn<SubComponent, String> scNameCol;
+	
+	@FXML
+	private TableColumn<SubComponent, String> weightageCol;
+	
+	@FXML
+	private TableColumn<SubComponent, String> descCol;
+	
+	@FXML
+	private TableView<Subcomponent_marks> subCompTableMarks;
+	
+	@FXML
+	private TableColumn<Subcomponent_marks, String> marksCol;
+	
+	@FXML
+	private Button welcomeTxt;
+	
+	@FXML
+	private Button btnHome;
+	
+	@FXML
+	private Button btnComponents;
+	
+	@FXML
+	private Button btnSignOut;
 
-    @FXML
-    private Pane dashboardPane;
-
-    @FXML
-    private Pane lsubComponentPane;
-
-    @FXML
-    private Text moduleLbl;
-
-    @FXML
-    private TextArea feedbackTxtArea;
-    
-    @FXML
-    private TableView<SubComponent> subCompTable;
-    @FXML
-    private TableColumn<SubComponent, String> scNameCol;
-    @FXML
-    private TableColumn<SubComponent, String> marksCol;
-    @FXML
-    private TableColumn<SubComponent, String> weightageCol;
-    @FXML
-    private TableColumn<SubComponent, String> descCol;
-
-    @FXML
-    private Button welcomeTxt;
-
-    @FXML
-    private Button btnHome;
-
-    @FXML
-    private Button btnComponents;
-
-    @FXML
-    private Button btnSignOut;
     
     @FXML
     void navBar(ActionEvent actionEvent) {
@@ -136,24 +146,32 @@ public class studentViewSubComponent implements Initializable{
     	
 		studentViewComp svc = new studentViewComp();
 		
-		//*****getting comp_id not working****** currently id is 1
-		int id = svc.getComp_id() + 1;
 		
+		//*****getting comp_id not working****** currently id is 1
+		int id = svc.getComp_id() + 5;
+		
+		moduleLbl.setText("This component");
+		
+		//for storing of SubComponent rows
 		ObservableList<SubComponent> scOL = FXCollections.observableArrayList();
+		
+		//for storing of a subcomponent_mark rows
+		ObservableList<Subcomponent_marks> scmOL = FXCollections.observableArrayList();
+		
 		ResultSet rs = null;
 		
 		MySQLConnection db = new MySQLConnection();
 		String dbQuery;
 		
 		
-		//*****getting of the subcomp details
+		//*****getting of the subcomp DETAILS******
 		// Step 1 - connect to database
 		db.getConnection();
 		
 		// step 2 - declare the SQL statement
 		System.out.println("this is the COMP ID" + id);
 		
-		dbQuery = "SELECT * FROM 2x01_db.subcomponent WHERE comp_id="+id+";";
+		dbQuery = "SELECT * FROM 2x01_db.subcomponent WHERE comp_id="+id+" ;";
 		// step 3 - using DBControlle readRequest method
 		rs = db.readRequest(dbQuery);
 		try {
@@ -168,16 +186,45 @@ public class studentViewSubComponent implements Initializable{
 		// step 4 - close connection
 		db.terminate();
 		
+		
+		//*****getting of the subcomp MARKS******
+		// Step 1 - connect to database
+		db.getConnection();
+		
+		// step 2 - declare the SQL statement		
+		dbQuery = "SELECT * FROM 2x01_db.subcomponent_mark WHERE scm_stu_id='1902127' GROUP BY scm_subcomp_id;";
+		
+		// step 3 - using DBControlle readRequest method
+		rs = db.readRequest(dbQuery);
+		try {
+			while (rs.next()) {
+				Subcomponent_marks scm = new Subcomponent_marks();
+				Subcomponent_marks subComponentMark = scm.convertToSubcomponent_marks(rs);
+				scmOL.add(subComponentMark);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// step 4 - close connection
+		db.terminate();
+		
+		
+		
+		
 		scNameCol.setCellValueFactory(new PropertyValueFactory<>("subcomp_name"));
 		
 		//marks required to be gotten from separate table which will require 
 		//stu_id, subcomp_id and comp_id
-		marksCol.setCellValueFactory(new PropertyValueFactory<>("subcomp_weight"));
+//		marksCol.setCellValueFactory(new PropertyValueFactory<>("subcomp_weight"));
 		
 		
 		weightageCol.setCellValueFactory(new PropertyValueFactory<>("subcomp_weight"));
 		descCol.setCellValueFactory(new PropertyValueFactory<>("subcomp_desc"));
 		subCompTable.setItems(scOL);
+		
+		marksCol.setCellValueFactory(new PropertyValueFactory<>("scm_marks"));
+		subCompTableMarks.setItems(scmOL);
+		
 		
 		subCompTable.setRowFactory( tv -> {
 		    TableRow<SubComponent> row = new TableRow<>();

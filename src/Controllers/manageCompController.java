@@ -1,5 +1,7 @@
 package Controllers;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -27,14 +30,17 @@ import javafx.stage.Modality;
 import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
+import java.util.Arrays;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import entities.Component;
+import entities.Lecturer;
+import entities.User;
 
 public class manageCompController implements Initializable {
 	
@@ -49,13 +55,16 @@ public class manageCompController implements Initializable {
 	    private Pane lManageCPane;
 
 	    @FXML
-	    private Button btnAssWeightage;
+	    private Button btnSaveChanges;
 
 	    @FXML
 	    private VBox componentVB;
-
+	    
 	    @FXML
 	    private Button btnHome;
+
+	    @FXML
+	    private Button welcomeBtn;
 
 	    @FXML
 	    private Button btnManageCom;
@@ -65,62 +74,60 @@ public class manageCompController implements Initializable {
 
 	    @FXML
 	    private Button btnSignOut;
-	    
-	    int comp_id;
-	    
-	    public int getComp_id() {
-			return comp_id;
-		}
-
-		public void setComp_id(int comp_id) {
-			this.comp_id = comp_id;
-		}
 
 		public manageCompController() {
 			super();
 			// TODO Auto-generated constructor stub
 		}
-
+		
 
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
-			ArrayList<Component> compAL = new ArrayList<Component>();
-			ResultSet rs = null;
-			MySQLConnection db = new MySQLConnection();
-			String dbQuery;
-			// Step 1 - connect to database
-			db.getConnection();
-			// step 2 - declare the SQL statement
-			dbQuery = "SELECT * FROM 2x01_db.component;";
-			// step 3 - using DBControlle readRequest method
-			rs = db.readRequest(dbQuery);
-			try {
-				while (rs.next()) {
-					Component cp = new Component();
-					Component component = cp.convertToComponent(rs);
-					compAL.add(component);
-					
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			// step 4 - close connection
-			db.terminate();
-			
+			CreateText ct = new CreateText();
+			String id = ct.getText();
+			User ul = new Lecturer();
+			String name = ul.getNameByID(id);
+			welcomeBtn.setText("Welcome, " + name);
+			Component comp = new Component();
+			ArrayList<String> modifiedID = new ArrayList<String>();
+			ArrayList<Boolean> modifiedVisibility = new ArrayList<Boolean>();
+			ArrayList<Component> compAL = comp.retrieveAllComponents();
 			Node[] nodes = new Node[compAL.size()];
 			for (int i = 0; i < nodes.length; i++) {
 				try {
 					final int j = i;
 					nodes[i] = FXMLLoader.load(getClass().getResource("/Templates/component.fxml"));
-					Label lbl1 = (Label) nodes[i].lookup("#compNameLbl");
-					Label lbl2 = (Label) nodes[i].lookup("#compDescLbl");
-					Label lbl3 = (Label) nodes[i].lookup("#weightLbl");
+					Label lbl1 = (Label) nodes[i].lookup("#comp_name");
+					Label lbl2 = (Label) nodes[i].lookup("#comp_desc");
+					Label lbl3 = (Label) nodes[i].lookup("#comp_weight");
+					@SuppressWarnings("unchecked")
+					ComboBox<String> cmb1 = (ComboBox<String>) nodes[i].lookup("#comp_visibility");
+					String visibility = "Hidden";
+					if(Boolean.TRUE.equals(compAL.get(i).getComp_visible())) {
+						visibility = "Shown";
+					}else {
+						visibility = "Hidden";
+					}
 					if(lbl1 != null && lbl2!=null && lbl3 !=null) {
 						lbl1.setText(compAL.get(i).getComp_name());
 						lbl2.setText(compAL.get(i).getComp_desc());
 						lbl3.setText(String.valueOf(compAL.get(i).getComp_weight()));
+						cmb1.getSelectionModel().select(visibility);
 					}
-
+					
+					cmb1.valueProperty().addListener((obs, oldItem, newItem) -> {
+						if(oldItem != newItem) {
+							boolean visible = false;
+							if(newItem.equalsIgnoreCase("Hidden")) {
+								visible = false;
+							}
+							else {
+								visible = true;
+							}
+							modifiedID.add(compAL.get(j).getComp_id());
+							modifiedVisibility.add(visible);
+						}
+					});
 					// give the items some effect
 					nodes[i].setOnMouseEntered(event -> {
 						nodes[j].setStyle("-fx-background-color : #E9E9E9");
@@ -134,8 +141,10 @@ public class manageCompController implements Initializable {
 							if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 								if (mouseEvent.getClickCount() == 2) {
 									Parent subComponent;
-									comp_id = j;
+									Integer comp_id = j+1;
 									try {
+										CreateText ct = new CreateText();
+										ct.createCompID(Integer.toString(comp_id));
 										subComponent = FXMLLoader.load(getClass().getResource("/Templates/subComponent.fxml"));										
 										Scene subComponentScene = new Scene(subComponent);
 										Stage subComponentStage = (Stage) ((Node) mouseEvent.getSource()).getScene()
@@ -151,34 +160,44 @@ public class manageCompController implements Initializable {
 								}
 							}
 						}
-
-						public void submitAction(MouseEvent mouseEvent) {
-
+					});
+					btnSaveChanges.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent mouseEvent) {
+							if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+								for(int i = 0; i<modifiedID.size(); i++) {
+									String comp_id = (modifiedID.get(i));
+									boolean visibility = (modifiedVisibility.get(i));
+									Component comp = new Component();
+									comp.setVisibility(comp_id, visibility);
+								}
+							}
 						}
 					});
-
 					componentVB.getChildren().add(nodes[i]);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
+			
 		}
 		
 
-	public void weightageMethod(ActionEvent actionEvent) {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Templates/weightageComponent.fxml"));
-			Parent root2 = (Parent) fxmlLoader.load();
-			Stage stage = new Stage();
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.initOwner(mainStage.getScene().getWindow());
-			stage.setTitle("Assign Weightage");
-			stage.setScene(new Scene(root2));
-			stage.show();
-		} catch (Exception e) {
-
-		}
-	}
+//
+//	public void weightageMethod(ActionEvent actionEvent) {
+//		try {
+//			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Templates/weightageComponent.fxml"));
+//			Parent root2 = (Parent) fxmlLoader.load();
+//			Stage stage = new Stage();
+//			stage.initModality(Modality.APPLICATION_MODAL);
+//			stage.initOwner(mainStage.getScene().getWindow());
+//			stage.setTitle("Assign Weightage");
+//			stage.setScene(new Scene(root2));
+//			stage.show();
+//		} catch (Exception e) {
+//
+//		}
+//	}
 
 	public void navBar(ActionEvent actionEvent) {
 		if (actionEvent.getSource() == btnHome) {

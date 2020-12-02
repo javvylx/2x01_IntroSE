@@ -10,32 +10,36 @@
 
 <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="53.0" prefWidth="800.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 5; -fx-background-insets: 0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Label fx:id="comp_name" prefWidth="100.0" text="Component Name">
+        <Label fx:id="subcomp_name" prefWidth="100.0" text="SubComponent Name">
          <HBox.margin>
             <Insets left="60.0" />
          </HBox.margin></Label>
-        <Label fx:id="comp_desc" prefWidth="230.0" text="Component Description">
+        <Label fx:id="subcomp_desc" prefWidth="230.0" text="SubComponent Description">
             <HBox.margin>
                 <Insets left="100.0" />
             </HBox.margin>
         </Label>
-        <Label fx:id="comp_weight" prefWidth="50.0" text="Component Weightage">
-            <HBox.margin>
-                <Insets left="70.0" />
-            </HBox.margin>
-        </Label>
-      <ComboBox fx:id="comp_visibility" prefWidth="90.0">
+      <ComboBox fx:id="subcomp_weightage" prefWidth="90.0">
          <items>
 		        <FXCollections fx:factory="observableArrayList">
-		              <String fx:value="Shown" />
-		              <String fx:value="Hidden" />
+		              <String fx:value="0%"/>	
+		              <String fx:value="10%" />	
+		              <String fx:value="20%" />	
+		              <String fx:value="30%" />	
+		              <String fx:value="40%" />	
+		              <String fx:value="50%" />	
+		              <String fx:value="60%" />	
+		              <String fx:value="70%" />	
+		              <String fx:value="80%" />
+		              <String fx:value="90%" />	
+		              <String fx:value="100%" />		
 		        </FXCollections>
 		 </items>
 		 <value>
 			        <String fx:value="Failed To Retrieve" />
-			    </value>
+		 </value>
          <HBox.margin>
-            <Insets left="80.0" />
+            <Insets left="150.0" />
          </HBox.margin>
       </ComboBox>
     </children>

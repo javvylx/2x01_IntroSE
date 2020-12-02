@@ -119,7 +119,7 @@
                         <Image url="@/images/SIT-Primary-logo-722x407.png" />
                      </image>
                   </ImageView>
-                  <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="258.0" style="-fx-background-color: #3F2B63;" styleClass="navbut" text="Welcome, Lorem Ipsum" textFill="WHITE" />
+                  <Button fx:id="welcomeBtn" mnemonicParsing="false" prefHeight="46.0" prefWidth="258.0" style="-fx-background-color: #3F2B63;" styleClass="navbut" text="Welcome, Lorem Ipsum" textFill="WHITE" />
                   <Button id="btnHome" fx:id="btnHome" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Home" textFill="WHITE" />
                   <Button id="btnMC" fx:id="btnManageCom" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Manage Components" textFill="WHITE" />
                   <Button id="btnVS" fx:id="btnViewStudent" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="View Students" textFill="WHITE" />

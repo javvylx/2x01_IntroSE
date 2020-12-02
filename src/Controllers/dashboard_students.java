@@ -60,8 +60,10 @@ public class dashboard_students implements Initializable {
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		String studentName = "Student A"; //change this to get dynamically
-		welcomeTxt.setText(welcomeTxt.getText()+ studentName);
+		CreateText ct = new CreateText();
+		String id = ct.getText();
+		//Write a function to retrieve Student name by id
+		welcomeTxt.setText(welcomeTxt.getText());
 	}
 
     @FXML
