@@ -148,21 +148,18 @@ public class dashboard_students implements Initializable {
 		}
 		
 		public void hundredpercentile() {
-			File filepath = new File("src/video_clips/100percentile.mp4");
-			Media file = new Media(filepath.toURI().toString());
-			MediaPlayer mediaPlayer = new MediaPlayer(file);
-//			me = new Media(new File(path).toURI().toString());
-			System.out.println(file.getDuration().toSeconds());
-			mp = new MediaPlayer(me);
-			mv.setMediaPlayer(mp);
-			mp.setAutoPlay(true);
-			DoubleProperty width = mv.fitHeightProperty();
-			DoubleProperty height = mv.fitHeightProperty();
-			width.bind(Bindings.selectDouble(mv.sceneProperty(), "width"));
-			height.bind(Bindings.selectDouble(mv.sceneProperty(), "height"));
-			ReplayButton.setVisible(true);
-			
-		}
+            String path = new File("src/video_clips/100percentile.mp4").getAbsolutePath();
+            me = new Media(new File(path).toURI().toString());
+            mp = new MediaPlayer(me);
+            mv.setMediaPlayer(mp);
+            mp.setAutoPlay(true);
+            DoubleProperty width = mv.fitHeightProperty();
+            DoubleProperty height = mv.fitHeightProperty();
+            width.bind(Bindings.selectDouble(mv.sceneProperty(), "width"));
+            height.bind(Bindings.selectDouble(mv.sceneProperty(), "height"));
+            ReplayButton.setVisible(true);
+            System.out.println(me.getDuration().toSeconds());
+        }
 		
 	 public void startPressed() {
 		 	hundredpercentile();
