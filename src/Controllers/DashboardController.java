@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.prefs.Preferences;
@@ -193,12 +194,11 @@ public class DashboardController implements Initializable {
 		}
 	}
 	
-	public void calculateStats(String class_id) {
-		//calculate mean and SD for all student for all grades
-		//get all the student in the class
+	public HashMap<String, Double> getStudentPerformance(String class_id){
 		ClassStudent cs = new ClassStudent();
 		ArrayList<String> alStudentID = cs.retrieveStudentIdByClassId(class_id);
-		ArrayList<Double> studentGradesList = new ArrayList<Double>();
+//		ArrayList<Double> studentGradesList = new ArrayList<Double>();
+		HashMap<String, Double> studentGradesList = new HashMap<String, Double>();
 		
 		//get grades (100%) - divide by number of components - store in an arraylist of grades
 		for(String id : alStudentID) {
@@ -206,30 +206,41 @@ public class DashboardController implements Initializable {
 			Component comp2 = new Component();
 		 	ArrayList<Component> compAL = comp2.retrieveAllComponents();
 		 	double totalGrades = 0;
-		 	int modCount = 0;
+		 	double maxWeight = 0;
 		 	
 		 	//for each student run through all components to get grade
 		 	//if the grade exist, increment grade and increment no of mods
 		 	for(Component c : compAL) {
 		 		c.populateSubComponentList();
 		 		double grades = c.getGrade(id);
+		 		double weight = c.getComp_weight();
 	 			if (Double.isNaN(grades) == false) {
-	 				totalGrades += grades;
-	 				modCount += 1;
+	 				totalGrades += grades * (weight/100);
+	 				maxWeight += weight;
 	 			}
 		 	}
 		 	
 		 	//after getting total grade and no of mod, divide to get a percentage value of student performance
 		 	//this is the list of student's overall grade, 4 students mean 4 elements in this arraylist
-		 	double performance = totalGrades / modCount;
-		 	studentGradesList.add(performance);
+		 	double performance = totalGrades / maxWeight;
+		 	studentGradesList.put(id, performance);
 		}
+		
+		System.out.println(studentGradesList);
+		return studentGradesList;
+		
+	}
+	
+	public void calculateStats(String class_id) {
+		//calculate mean and SD for all student for all grades
+		//get all the student in the class
+		HashMap<String, Double> studentGradesList = getStudentPerformance(class_id);
 		
 		
 		//sum all grades and divide by number of student to get mean
 		int studentCount = studentGradesList.size();
 		double totalGrade = 0;
-		for(double grade : studentGradesList) {
+		for(double grade : studentGradesList.values()) {
 			totalGrade += grade;
 		}
 		
@@ -238,7 +249,7 @@ public class DashboardController implements Initializable {
 		//calculate SD from studentGradesList
 		double standardDeviation = 0.0;
 
-        for(double num: studentGradesList) {
+        for(double num: studentGradesList.values()) {
             standardDeviation += Math.pow(num - average, 2);
         }
 
