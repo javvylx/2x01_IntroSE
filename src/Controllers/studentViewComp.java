@@ -88,15 +88,7 @@ public class studentViewComp implements Initializable {
 		// step 4 - close connection
 		db.terminate();
 		
-		//calculate all components grade here
-		System.out.println("size of compAL" + compAL.size());
-		
-		for (int i = 0; i < compAL.size(); i++) {
-//			System.out.println("THis is the comp_id: " + compAL.get(i).getGrade("1902127"));
-		}
-		
-		System.out.println("the grade of comp-id 1" + compAL.get(0).getGrade("1902127"));
-		
+	
 		
 		Node[] nodes = new Node[compAL.size()];
 		for (int i = 0; i < nodes.length; i++) {
@@ -105,14 +97,11 @@ public class studentViewComp implements Initializable {
 				nodes[i] = FXMLLoader.load(getClass().getResource("/Templates/componentWithGrade.fxml"));
 				Label lbl1 = (Label) nodes[i].lookup("#compNameLbl");
 				Label lbl4 = (Label) nodes[i].lookup("#gradeLbl");
-//				Label lbl4 = (Label) compAL.get(0).getGrade("1902127");
-				//update grades in label here
 				Label lbl2 = (Label) nodes[i].lookup("#compDescLbl");
 				Label lbl3 = (Label) nodes[i].lookup("#weightLbl");
 				if(lbl1 != null && lbl2!=null && lbl3 !=null) {
 					lbl1.setText(compAL.get(i).getComp_name());
-					//set grades here too
-					lbl4.setText(String.valueOf(compAL.get(i).getGrade("1902127")));
+					lbl4.setText(String.valueOf(compAL.get(i).getGrade("1902127")));//placeholder stu_id ref
 					lbl2.setText(compAL.get(i).getComp_desc());
 					lbl3.setText(String.valueOf(compAL.get(i).getComp_weight()));
 				}
