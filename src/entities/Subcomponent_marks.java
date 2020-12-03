@@ -112,6 +112,7 @@ public class Subcomponent_marks {
 		db.getConnection();
 		// step 2 - declare the SQL statement
 		dbQuery = "SELECT * FROM 2x01_db.subcomponent_mark Where scm_subcomp_id = " +subComp_id+ " and scm_stu_id = " +stuID + ";";
+
 		// step 3 - using DBControlle readRequest method
 		rs = db.readRequest(dbQuery);
 		try {
