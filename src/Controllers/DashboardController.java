@@ -40,6 +40,7 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.prefs.Preferences;
 
+import entities.ClassStudent;
 import entities.Component;
 import entities.Lecturer;
 import entities.Student;
@@ -107,6 +108,7 @@ public class DashboardController implements Initializable {
 		String id = ct.getText();
 		User ul = new Lecturer();
 		String name = ul.getNameByID(id);
+		calculateStats("T01");
 		welcomeBtn.setText("Welcome, " + name);
 		Component comp = new Component();
 		ArrayList<Component> compAL = comp.retrieveAllComponents();
@@ -189,6 +191,60 @@ public class DashboardController implements Initializable {
 			dashboardPane.setVisible(true);
 			dashboardPane.toFront();
 		}
+	}
+	
+	public void calculateStats(String class_id) {
+		//calculate mean and SD for all student for all grades
+		//get all the student in the class
+		ClassStudent cs = new ClassStudent();
+		ArrayList<String> alStudentID = cs.retrieveStudentIdByClassId(class_id);
+		ArrayList<Double> studentGradesList = new ArrayList<Double>();
+		
+		//get grades (100%) - divide by number of components - store in an arraylist of grades
+		for(String id : alStudentID) {
+			//loop through all student and calculate total grade
+			Component comp2 = new Component();
+		 	ArrayList<Component> compAL = comp2.retrieveAllComponents();
+		 	double totalGrades = 0;
+		 	int modCount = 0;
+		 	
+		 	//for each student run through all components to get grade
+		 	//if the grade exist, increment grade and increment no of mods
+		 	for(Component c : compAL) {
+		 		c.populateSubComponentList();
+		 		double grades = c.getGrade(id);
+	 			if (Double.isNaN(grades) == false) {
+	 				totalGrades += grades;
+	 				modCount += 1;
+	 			}
+		 	}
+		 	
+		 	//after getting total grade and no of mod, divide to get a percentage value of student performance
+		 	//this is the list of student's overall grade, 4 students mean 4 elements in this arraylist
+		 	double performance = totalGrades / modCount;
+		 	studentGradesList.add(performance);
+		}
+		
+		
+		//sum all grades and divide by number of student to get mean
+		int studentCount = studentGradesList.size();
+		double totalGrade = 0;
+		for(double grade : studentGradesList) {
+			totalGrade += grade;
+		}
+		
+		double average = totalGrade / studentCount;
+		
+		//calculate SD from studentGradesList
+		double standardDeviation = 0.0;
+
+        for(double num: studentGradesList) {
+            standardDeviation += Math.pow(num - average, 2);
+        }
+
+        double SD = Math.sqrt(standardDeviation/studentCount);
+		
+        System.out.println("Average: "+average+" Standard Deviation: "+SD);	
 	}
 
 	public void navBar(ActionEvent actionEvent) {
