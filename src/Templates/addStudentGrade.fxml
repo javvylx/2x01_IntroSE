@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="modifyStage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="428.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.addStudentGradeController">
+   <children>
+      <VBox prefHeight="428.0" prefWidth="700.0">
+         <children>
+            <Text fx:id="titlelbl" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Student Grade" wrappingWidth="411.12428283691406">
+               <font>
+                  <Font name="Arial" size="22.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="30.0" top="10.0" />
+               </VBox.margin>
+            </Text>
+            <Separator prefWidth="200.0" />
+            <HBox prefHeight="342.0" prefWidth="696.0">
+               <children>
+                  <VBox prefHeight="342.0" prefWidth="701.0">
+                     <padding>
+                        <Insets right="5.0" />
+                     </padding>
+                     <children>
+                        <HBox prefHeight="34.0" prefWidth="285.0">
+                           <children>
+                              <Text fx:id="fileSelectedtxt" strokeType="OUTSIDE" strokeWidth="0.0" text="No file selected" wrappingWidth="91.73675918579102">
+                                 <HBox.margin>
+                                    <Insets left="465.0" top="10.0" />
+                                 </HBox.margin>
+                              </Text>
+                              <Button fx:id="importCSVBtn" mnemonicParsing="false" prefHeight="26.0" prefWidth="120.0" text="Import CSV">
+                                 <HBox.margin>
+                                    <Insets left="10.0" top="6.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="6.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <TableView fx:id="excelTable" prefHeight="311.0" prefWidth="703.0">
+                          <columns>
+                            <TableColumn fx:id="colOne" prefWidth="140.0" text="Component Name" />
+                              <TableColumn fx:id="coltwo" prefWidth="140.0" text="SubComponent Name" />
+                              <TableColumn fx:id="colthree" prefWidth="140.0" text="Student ID" />
+                              <TableColumn fx:id="colfour" prefWidth="140.0" text="Marks Obtained" />
+                              <TableColumn fx:id="colfive" prefWidth="140.0" text="Maximum Marks" />
+                          </columns>
+                        </TableView>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+            <Button fx:id="saveToDbBtn" mnemonicParsing="false" prefWidth="80.0" text="Save">
+               <VBox.margin>
+                  <Insets left="605.0" top="6.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -271,4 +271,30 @@ public class SubComponent implements IComponent{
 		return grade;
 	}
 	
+	public String retrieveIDByName(String subcomp_name) {
+		String subcomp_id="";
+		ResultSet rs = null;
+		MySQLConnection db = new MySQLConnection();
+		String dbQuery;
+		PreparedStatement pstmt;
+		// step 1 - connect to database
+		db.getConnection();
+		// step 2 - declare the SQL statement
+		dbQuery = "select subcomp_id FROM 2x01_db.subcomponent WHERE subcomp_name =? ";
+		pstmt = db.getPreparedStatement(dbQuery);
+		// step 3 - execute query
+		try {
+			pstmt.setString(1,subcomp_name);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				subcomp_id = rs.getString("subcomp_id");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// step 4 - close connection
+		db.terminate();
+		return subcomp_id;
+	}
+	
 }

@@ -168,6 +168,61 @@ public class Component implements IComponent{
 		return comp_name;
 	}
 	
+	public Component retrieveComponentByID(String comp_id) {
+		Component component = new Component();
+		ResultSet rs = null;
+		PreparedStatement pstmt;
+		MySQLConnection db = new MySQLConnection();
+		String dbQuery;
+		// step 1 - connect to database
+		db.getConnection();
+		// step 2 - declare the SQL statement
+		dbQuery = "select * FROM 2x01_db.component WHERE comp_id =? ";
+		pstmt = db.getPreparedStatement(dbQuery);
+		// step 3 - execute query
+		try {
+			pstmt.setString(1,comp_id);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				Component cp = new Component();
+				component = cp.convertToComponent(rs);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// step 4 - close connection
+		db.terminate();
+		// end of retrieve
+		return component;
+	}
+	
+	public String retrieveIDByName(String comp_name) {
+		String comp_id="";
+		ResultSet rs = null;
+		MySQLConnection db = new MySQLConnection();
+		String dbQuery;
+		PreparedStatement pstmt;
+		// step 1 - connect to database
+		db.getConnection();
+		// step 2 - declare the SQL statement
+		dbQuery = "select comp_id FROM 2x01_db.component WHERE comp_name =? ";
+		pstmt = db.getPreparedStatement(dbQuery);
+		// step 3 - execute query
+		try {
+			pstmt.setString(1,comp_name);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				comp_id = rs.getString("comp_id");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// step 4 - close connection
+		db.terminate();
+		return comp_id;
+	}
+	
+	
 	public ObservableList<String> retrieveComponentName(){
 		ObservableList<String>  locn = FXCollections.observableArrayList(); //List of String
 		ResultSet rs = null;
@@ -201,7 +256,7 @@ public class Component implements IComponent{
 		// Step 1 - connect to database
 		db.getConnection();
 		// step 2 - declare the SQL statement
-		dbQuery = "SELECT * FROM 2x01_db.subcomponent Where comp_id ="+this.comp_id+";";
+        dbQuery = "SELECT * FROM 2x01_db.subcomponent WHERE comp_id ='1';"; //1 is currently a placeholder
 		// step 3 - using DBControlle readRequest method
 		rs = db.readRequest(dbQuery);
 		try {
@@ -220,9 +275,11 @@ public class Component implements IComponent{
 	
 	@Override
 	public double getGrade(String stuID) {
+        Component comp = new Component();
+        comp.populateSubComponentList();
 		double totalGrade = 0;
-		double totalWeightage = 0; 
-		for (SubComponent sc : subComponentList) 
+		double totalWeightage = 0;         
+		for (SubComponent sc : comp.subComponentList)  
 		{ 
 			if(sc.getGrade(stuID) != -1) {
 				totalGrade += sc.getGrade(stuID);

@@ -58,18 +58,7 @@ public class LoginController {
     @FXML
     void loginMethod(ActionEvent event) {
     	if (event.getSource() == btnLogin) {
-			// Set verification here. If true then run the following codes
-//    		//test code start here
-//    		Component comp2 = new Component();
-//    		ArrayList<Component> compAL = comp2.retrieveAllComponents();
-//    		for(Component c : compAL) {
-//    			//run subcomponent binding
-//    			System.out.println("Testing for comp id: "+ c.getComp_id());
-//    			c.populateSubComponentList();
-//    			System.out.println("Populated... Querying Grades for 1902128");
-//    			System.out.println("Grade's HEREEEEEEEEEEE"+c.getGrade("1902128"));
-//    		}
-//    		//test code end here
+			
     		
 			GetUserFactory guf = new GetUserFactory();
 			String id = userSelector.getValue().toString();
@@ -116,7 +105,6 @@ public class LoginController {
 				VBox comp = new VBox();
 				Text error = new Text("Incorrect information!");
 				comp.getChildren().add(error);
-
 				Scene stageScene = new Scene(comp, 300, 300);
 				newStage.setScene(stageScene);
 				newStage.show();

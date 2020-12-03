@@ -1,4 +1,6 @@
 package Controllers;
+
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,6 +24,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.DataFormat;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -30,29 +33,63 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
+import java.util.Iterator;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
-
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.application.Application;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.collections.*;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 import entities.Component;
+import entities.Component_feedback;
+import entities.ExcelToTable;
+import entities.Lecturer;
 import entities.Student;
 import entities.SubComponent;
+import entities.Subcomponent_marks;
 import entities.User;
 
 public class viewStudentController implements Initializable {
 
-    @FXML
-    private Button welcomeBtn;
+	@FXML
+	private Button welcomeBtn;
 
 	@FXML
 	private AnchorPane mainStage;
@@ -71,6 +108,8 @@ public class viewStudentController implements Initializable {
 	@FXML
 	private Pane lHomePagePane;
 	@FXML
+	private Button importStudentGradeBtn;
+	@FXML
 	private Pane lViewStudentsPane;
 	@FXML
 	private Pane lManageCPane;
@@ -86,25 +125,29 @@ public class viewStudentController implements Initializable {
 	private Button btnSignOut;
 	@FXML
 	private Pane lsubComponentPane;
-    @FXML
-    private TableView<Student> studentListTable;
-    @FXML
-    private TableColumn<Student, String> adminNoCol;
-    @FXML
-    private TableColumn<Student, String> fNameCol;
-    @FXML
-    private TableColumn<Student, String> lNameCol;
-    @FXML
-    private TableColumn<Student, String> emailCol;
-    @FXML
-    private TableColumn<Student, String> mobileCol;
-   
+	@FXML
+	private TableView<Student> studentListTable;
+	@FXML
+	private TableColumn<Student, String> adminNoCol;
+	@FXML
+	private TableColumn<Student, String> fNameCol;
+	@FXML
+	private TableColumn<Student, String> lNameCol;
+	@FXML
+	private TableColumn<Student, String> emailCol;
+	@FXML
+	private TableColumn<Student, String> mobileCol;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		CreateText ct = new CreateText();
+		String isd = ct.getText();
+		User ul = new Lecturer();
+		String name = ul.getNameByID(isd);
+		welcomeBtn.setText("Welcome, " + name);
 		ObservableList<Student> obsv = FXCollections.observableArrayList();
 		User user = new Student();
 		obsv = user.retrieveAllStudentForTable();
-		
 		adminNoCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStu_id()));
 		fNameCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStu_fname()));
 		lNameCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStu_lname()));
@@ -121,12 +164,14 @@ public class viewStudentController implements Initializable {
 		        if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
 		            Student rowData = row.getItem();
 		            System.out.println(rowData.getStu_id());
+		            String studentID = rowData.getStu_id();
 		            Node[] nodesCreate  = new Node[3];
 					try {
 						nodesCreate[0] = FXMLLoader.load(getClass().getResource("/Templates/lecturerAddFeedback.fxml"));
 						Text studenNametxt = (Text) nodesCreate[0].lookup("#studenNametxt");
 						Text studentGradetxt = (Text) nodesCreate[0].lookup("#studentGradetxt");
 						ComboBox<String> componentSelectcmb = (ComboBox) nodesCreate[0].lookup("#componentSelectcmb");
+						studenNametxt.setText(rowData.getStu_fname()+" "+rowData.getStu_lname());
 						Component c = new Component();
 						ObservableList<String> locn = c.retrieveComponentName();
 						componentSelectcmb.setItems(locn);
@@ -134,33 +179,35 @@ public class viewStudentController implements Initializable {
 						TextArea feedbacktxtarea =(TextArea) nodesCreate[0].lookup("#feedbacktxtarea");
 						componentSelectcmb.valueProperty().addListener((obs, oldItem, newItem) -> {
 							if(oldItem != newItem) {
-								
+					    		ArrayList<Component> compAL = c.retrieveAllComponents();
+					    		String csa = c.retrieveIDByName(newItem);
+					    		Component ca = c.retrieveComponentByID(csa);
+					    		ca.populateSubComponentList();
+					    		studentGradetxt.setText(Double.toString(ca.getGrade(rowData.getStu_id())));
 							}
 						});
-//						Button addFeedbackBtn = (Button) nodesCreate[0].lookup("#addFeedbackBtn");
-//						addFeedbackBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//							@Override
-//							public void handle(MouseEvent arg0) {
-//								// TODO Auto-generated method stub
-//								Alert alert = new Alert(AlertType.CONFIRMATION, "Confirm? ", ButtonType.YES, ButtonType.CANCEL);
-//								alert.showAndWait();
-//								if (alert.getResult() == ButtonType.YES) {
-//									SubComponent scasd = new SubComponent();
-//									String feedback = feedbacktxtarea.getText();
-//									if(scasd.createSubComponent()!= true) {
-//										System.out.println("Failed to create Subcomponent!");
-//									}else{
-//									    Stage stage = (Stage) createBtn.getScene().getWindow();
-//									    stage.close();
-//									    Alert a = new Alert(AlertType.INFORMATION, "Successfully create subcomponent!");
-//								        a.setContentText("Successfully create subcomponent!");
-//								        a.showAndWait();
-//										subComponentVB.getChildren().clear();
-//								        executableInit(comp_id);
-//									}
-//								}
-//							}
-//						});
+						Button addFeedbackBtn = (Button) nodesCreate[0].lookup("#addFeedbackBtn");
+						addFeedbackBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+							@Override
+							public void handle(MouseEvent arg0) {
+								// TODO Auto-generated method stub
+								Alert alert = new Alert(AlertType.CONFIRMATION, "Confirm? ", ButtonType.YES, ButtonType.CANCEL);
+								alert.showAndWait();
+								if (alert.getResult() == ButtonType.YES) {
+									String feedback = feedbacktxtarea.getText();
+									String stu_id = rowData.getStu_id();
+									String comp_name = componentSelectcmb.getSelectionModel().getSelectedItem();
+									String comp_id = c.retrieveIDByName(comp_name);
+									Component_feedback cfb = new Component_feedback();
+									if(cfb.createStudentFeedback(stu_id, comp_id, feedback)==true) {
+										Stage stage = (Stage) addFeedbackBtn.getScene().getWindow();
+									    stage.close();
+									    Alert a = new Alert(AlertType.INFORMATION, "Successfully made feedback!");
+										a.showAndWait();
+									}
+								}
+							}
+						});
 						Stage stage = new Stage();
 						stage.initModality(Modality.APPLICATION_MODAL);
 						stage.initOwner(mainStage.getScene().getWindow());
@@ -175,9 +222,25 @@ public class viewStudentController implements Initializable {
 		    });
 		    return row ;
 		});
+		importStudentGradeBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				Node[] nodesadd  = new Node[3];
+				try {
+					nodesadd[0] = FXMLLoader.load(getClass().getResource("/Templates/addStudentGrade.fxml"));
+					Stage stage = new Stage();
+					stage.initModality(Modality.APPLICATION_MODAL);
+					stage.initOwner(mainStage.getScene().getWindow());
+					stage.setScene(new Scene((Parent) nodesadd[0]));
+					stage.show();
+				}catch(Exception e) {
+					System.out.println(e);
+					e.printStackTrace();  // This will give line number
+				}
+			}
+		});
 	}
 
-	
 	public void weightageMethod(ActionEvent actionEvent) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Templates/weightageComponent.fxml"));

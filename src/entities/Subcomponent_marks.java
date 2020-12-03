@@ -1,8 +1,10 @@
 package entities;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import Controllers.MySQLConnection;
 
@@ -65,6 +67,42 @@ public class Subcomponent_marks {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public String retrieveHighestPKValue() {
+		String pk="";
+		ArrayList<String> listOfSubcompId = new ArrayList<String>();
+		ResultSet rs = null;
+		MySQLConnection db = new MySQLConnection();
+		String dbQuery;
+		PreparedStatement pstmt;
+		// Step 1 - connect to database
+		db.getConnection();
+		// step 2 - declare the SQL statement
+		dbQuery = "SELECT scm_id FROM 2x01_db.subcomponent_mark;";
+		// step 3 - using DBControlle readRequest method
+		rs = db.readRequest(dbQuery);
+		try {
+			while (rs.next()) {
+				listOfSubcompId.add(rs.getString("scm_id"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// step 4 - close connection
+		db.terminate();
+		// end of retrieve
+		ArrayList<Integer> listOfSubcompIdv2 = new ArrayList<Integer>();
+		if(listOfSubcompId != null) {
+			for(int i = 0; listOfSubcompId.size()>i; i++) {
+				listOfSubcompIdv2.add(Integer.parseInt(listOfSubcompId.get(i))+1);
+			}
+			pk = Integer.toString(Collections.max(listOfSubcompIdv2));
+			return pk;
+		}
+		else {
+			return "1";
+			}
+	}
+	
 	public Subcomponent_marks retrieveSubComponentMarkBySubComponentID(String subComp_id, String stuID){
 		Subcomponent_marks subcomp_marks = new Subcomponent_marks();
 		ResultSet rs = null;
@@ -102,5 +140,30 @@ public class Subcomponent_marks {
 		return scm;
 	}
 	
-	
+	public boolean createStudentGrades(String scm_id, String subcomp_id, String stu_id, Double marks_obtained, Double max_marks) {
+		// declare local variables
+		boolean success = false;
+		MySQLConnection db = new MySQLConnection();
+		String dbQuery;
+		PreparedStatement pstmt;
+		// step 1 - establish connection to database
+		db.getConnection();
+		// step 2 - declare the SQL statement
+		dbQuery = "INSERT INTO 2x01_db.subcomponent_mark(scm_id, scm_subcomp_id, scm_stu_id, scm_mark, scm_max_mark) VALUES( ?, ?, ?, ?, ?)";
+		pstmt = db.getPreparedStatement(dbQuery);
+		// step 3 - to insert record using executeUpdate method
+		try {
+			pstmt.setString(1, scm_id);
+			pstmt.setString(2, subcomp_id);
+			pstmt.setString(3, stu_id);
+			pstmt.setDouble(4, marks_obtained);
+			pstmt.setDouble(5, max_marks);
+			if (pstmt.executeUpdate() == 1)
+				success = true;
+			pstmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return success;
+	}
 }

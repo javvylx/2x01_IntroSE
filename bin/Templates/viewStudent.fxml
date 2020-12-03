@@ -41,6 +41,11 @@
                                  </VBox.margin>
                               </Text>
                               <Separator prefHeight="0.0" prefWidth="822.0" />
+                              <Button fx:id="importStudentGradeBtn" mnemonicParsing="false" prefWidth="120.0" text="Import Grades">
+                                 <VBox.margin>
+                                    <Insets left="690.0" top="6.0" />
+                                 </VBox.margin>
+                              </Button>
                               <TableView fx:id="studentListTable" prefHeight="492.0" prefWidth="800.0">
                                 <columns>
                                   <TableColumn fx:id="adminNoCol" prefWidth="150.0" text="Student ID" />
@@ -50,7 +55,7 @@
                                     <TableColumn fx:id="mobileCol" prefWidth="160.0" text="Contact Number" />
                                 </columns>
                                  <VBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="30.0" />
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="6.0" />
                                  </VBox.margin>
                               </TableView>
                            </children>
