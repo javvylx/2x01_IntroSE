@@ -201,7 +201,7 @@ public class Component implements IComponent{
 		// Step 1 - connect to database
 		db.getConnection();
 		// step 2 - declare the SQL statement
-		dbQuery = "SELECT * FROM 2x01_db.subcomponent Where comp_id ="+this.comp_id+";";
+		dbQuery = "SELECT * FROM 2x01_db.subcomponent WHERE comp_id ='1';"; //1 is currently a placeholder
 		// step 3 - using DBControlle readRequest method
 		rs = db.readRequest(dbQuery);
 		try {
@@ -220,9 +220,11 @@ public class Component implements IComponent{
 	
 	@Override
 	public double getGrade(String stuID) {
+		Component comp = new Component();
+		comp.populateSubComponentList();
 		double totalGrade = 0;
 		double totalWeightage = 0; 
-		for (SubComponent sc : subComponentList) 
+		for (SubComponent sc : comp.subComponentList) 
 		{ 
 			if(sc.getGrade(stuID) != -1) {
 				totalGrade += sc.getGrade(stuID);
