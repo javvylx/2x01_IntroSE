@@ -3,6 +3,7 @@ package Controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -140,9 +141,60 @@ public class studentViewSubComponent implements Initializable{
 		}
     }
     
+    public void displayFeedback() {
+		MySQLConnection db = new MySQLConnection();
+		String feedback = "";
+		ResultSet rs = null;
+		String dbQuery;
+		// Step 1 - connect to database
+		db.getConnection();
+		dbQuery = "SELECT feedback FROM 2x01_db.component_feedback WHERE cf_stu_id = 1902127";
+		rs = db.readRequest(dbQuery);
+		try {
+			if (rs.next()) {
+				feedback = rs.getString("feedback");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// step 4 - close connection
+		db.terminate();
+		feedbackTxtArea.setText(feedback);
+	}
+    
+    public void displayComponentName() {
+    	MySQLConnection db = new MySQLConnection();
+		String compName = "";
+		ResultSet rs = null;
+		String dbQuery;
+		// Step 1 - connect to database
+		db.getConnection();
+		dbQuery = "SELECT comp_name FROM 2x01_db.component WHERE comp_id='1'";
+		rs = db.readRequest(dbQuery);
+		try {
+			if (rs.next()) {
+				compName = rs.getString("comp_name");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// step 4 - close connection
+		db.terminate();
+		moduleLbl.setText(compName);
+    }
+    
+    
     //things to do when init subcomp page
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
+    	
+    	//display the feedback for the particular component
+    	displayFeedback();
+    	
+    	//display the component name for the particular component
+    	displayComponentName();
     	
 		studentViewComp svc = new studentViewComp();
 		
@@ -150,7 +202,6 @@ public class studentViewSubComponent implements Initializable{
 		//*****getting comp_id not working****** currently id is 1
 		int id = svc.getComp_id() + 5;
 		
-		moduleLbl.setText("This component");
 		
 		//for storing of SubComponent rows
 		ObservableList<SubComponent> scOL = FXCollections.observableArrayList();
@@ -211,17 +262,14 @@ public class studentViewSubComponent implements Initializable{
 		
 		
 		
-		scNameCol.setCellValueFactory(new PropertyValueFactory<>("subcomp_name"));
-		
-		//marks required to be gotten from separate table which will require 
-		//stu_id, subcomp_id and comp_id
-//		marksCol.setCellValueFactory(new PropertyValueFactory<>("subcomp_weight"));
-		
+		scNameCol.setCellValueFactory(new PropertyValueFactory<>("subcomp_name"));	
 		
 		weightageCol.setCellValueFactory(new PropertyValueFactory<>("subcomp_weight"));
 		descCol.setCellValueFactory(new PropertyValueFactory<>("subcomp_desc"));
 		subCompTable.setItems(scOL);
 		
+		
+		//subcomp marks set in a different table
 		marksCol.setCellValueFactory(new PropertyValueFactory<>("scm_marks"));
 		subCompTableMarks.setItems(scmOL);
 		
