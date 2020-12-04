@@ -233,18 +233,28 @@ public class dashboard_students implements Initializable {
 		comGrades.add(alertfoundornot);
 		return comGrades;
 	}
-	
+
 	public void startPressed() {
 		
-		ArrayList <Double> grades = getComGrades();
 		
-//		double studentGrade = grades.get(0);
-//		double curHigh = grades.get(1);
-//		double curLow = grades.get(2);
+		/**Comment this below section to test**/
+		
+		/*
+		ArrayList <Double> grades = getComGrades();
+		double studentGrade = grades.get(0);
+		double curHigh = grades.get(1);
+		double curLow = grades.get(2);
 		double alertfoundornot = grades.get(3);
-		double studentGrade = 1;
+		*/
+		
+		/**Comment the below section for actual code**/
+		
+		double studentGrade = 1.74;
 		double curHigh = 1;
 		double curLow = 0;
+		double alertfoundornot = -1;
+		
+		
 		double tf = (curHigh * 0.25)+curLow;
 		double f = (curHigh * 0.5)+curLow;
 		double sf = (curHigh * 0.75)+curLow;
@@ -260,24 +270,26 @@ public class dashboard_students implements Initializable {
 			alert.showAndWait();
 			System.out.println("Fail");
 
-		} else if (studentGrade == curLow) {
-			zeropercentile();
-		} else if (studentGrade == curHigh) {
-			hundredpercentile();
-			displayFeedback();
-		} else if (studentGrade <= tf && studentGrade != 0) {
-			twentyfivepercentile();
-			displayFeedback();
-		} else if (studentGrade > tf && studentGrade <= sf && studentGrade != 0) {
-			fiftypercentile();
-			displayFeedback();
-		} else if (studentGrade > sf && studentGrade < curHigh && studentGrade != 0) {
-			seventyfivepercentile();
-			displayFeedback();
+		} else {
+			if (studentGrade == curHigh) {
+				hundredpercentile();
+				displayFeedback();
+			} else if (studentGrade <= tf && studentGrade != 0) {
+				twentyfivepercentile();
+				displayFeedback();
+			} else if (studentGrade > tf && studentGrade <= sf && studentGrade != 0) {
+				fiftypercentile();
+				displayFeedback();
+			} else if (studentGrade > sf && studentGrade < curHigh && studentGrade != 0) {
+				seventyfivepercentile();
+				displayFeedback();
+			} 
+			
+			if (StartButton.isVisible()) {
+				StartButton.setVisible(false);
+			}
 		}
-		if (StartButton.isVisible()) {
-			StartButton.setVisible(false);
-		}
+
 	}
 
 
