@@ -275,11 +275,11 @@ public class Component implements IComponent{
 	
 	@Override
 	public double getGrade(String stuID) {
-//		Component comp = new Component();
-//		comp.populateSubComponentList();
+        Component comp = new Component();
+        comp.populateSubComponentList();
 		double totalGrade = 0;
-		double totalWeightage = 0; 
-		for (SubComponent sc : subComponentList)
+		double totalWeightage = 0;         
+		for (SubComponent sc : subComponentList)  
 		{ 
 			if(sc.getGrade(stuID) != -1) {
 				totalGrade += sc.getGrade(stuID);
