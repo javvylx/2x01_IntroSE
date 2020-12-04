@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Collections;
+import java.util.HashMap;
 
+import Controllers.DashboardController;
 import entities.Component;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -164,88 +166,132 @@ public class dashboard_students implements Initializable {
 		ReplayButton.setVisible(true);
 		System.out.println(me.getDuration().toSeconds());
 	}
-
-	public void startPressed() {
+	
+	public ArrayList<Double> getComGrades() {
 		Double studentGrade = 0.0;
-
-		Component comp2 = new Component();
-		ArrayList<Component> compAL = comp2.retrieveAllComponents();
-
-		// Step 1 - connect to database
-		ArrayList<Double> gradesList = new ArrayList<Double>();
+		ArrayList<String> classList = new ArrayList<String>();
+		ArrayList<HashMap<String, Double>> gradeList = new ArrayList<HashMap<String, Double>>();
+		ArrayList<Double> comGrades = new ArrayList<Double>();
+		String dbQuery;
+		double curHigh = 0;
+		double curLow = 100;
+		double alertfoundornot = -1;
+		
 		MySQLConnection db = new MySQLConnection();
 		db.getConnection();
+		dbQuery = "SELECT cs_class_id FROM 2x01_db.class_student";
 		ResultSet rs = null;
-		String dbQuery;
-		dbQuery = "SELECT stu_id FROM 2x01_db.student";
-		boolean alertfoundornot = false;
 		rs = db.readRequest(dbQuery);
+		
 		try {
-			while (rs.next()) {
-				for (Component c : compAL) {
-					// run subcomponent binding
-//    	 			System.out.println("Testing for comp id: "+ c.getComp_id());
-					c.populateSubComponentList();
-//    	 			System.out.println("Populated... Querying Grades for 1902128");	
-//    	 			System.out.println("Grade's HEREEEEEEEEEEE"+c.getGrade("1902128"));
-					// if (rs.getString("stu_id") == same as student id);
-					// studentGrade == c.getGrade(rs.getString("stu_id"))
-					// gradesList.add(studentGrade)
-					// continue
-
-					double grades = c.getGrade(rs.getString("stu_id"));
-					System.out.println(grades);
-					if (Double.isNaN(grades) == false) {
-						gradesList.add(grades);
-						alertfoundornot = true;
+			rs.next();
+			classList.add(rs.getString("cs_class_id"));
+			while(rs.next()){
+				for(String i : classList) {
+					if (rs.getString("cs_class_id").equals(i)) {
+						continue;
+					}
+					else {
+						classList.add(rs.getString("cs_class_id"));
 					}
 				}
+				
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} 	catch (SQLException e) {
 			e.printStackTrace();
 		}
-		// step 4 - close connection
 		db.terminate();
+		
+		for (String i : classList) {
+			HashMap<String, Double> grades = DashboardController.getStudentPerformance(i);
+			gradeList.add(grades);
+		}		
+		
+		CreateText ct = new CreateText();
+		String id = ct.getText();
+		
+		for (HashMap <String, Double> i: gradeList) {
+			if (i.get(id).equals(null)) {
+				alertfoundornot = -2;
+			}
+			else {
+				studentGrade = i.get(id);
+			}
+			for(Double v : i.values()) {
+				if (v > curHigh) {
+					curHigh = v;
+				}
+				if (v < curLow){
+					curLow = v;
+				}
+			}
+			
+		} 
+		comGrades.add(studentGrade);
+		comGrades.add(curHigh);
+		comGrades.add(curLow);
+		comGrades.add(alertfoundornot);
+		return comGrades;
+	}
 
-		Collections.sort(gradesList);
-		studentGrade = -1.0;
-		double last = gradesList.get(0);
-		double top = gradesList.get(gradesList.size() - 1);
-		double tf = ((top - last) * 0.25) + last;
-		double f = ((top - last) * 0.5) + last;
-		double sf = ((top - last) * 0.75) + last;
+	public void startPressed() {
+		
+		
+		/**Comment this below section to test**/
+		
+		/*
+		ArrayList <Double> grades = getComGrades();
+		double studentGrade = grades.get(0);
+		double curHigh = grades.get(1);
+		double curLow = grades.get(2);
+		double alertfoundornot = grades.get(3);
+		*/
+		
+		/**Comment the below section for actual code**/
+		
+		double studentGrade = 1.74;
+		double curHigh = 1;
+		double curLow = 0;
+		double alertfoundornot = -1;
+		
+		
+		double tf = (curHigh * 0.25)+curLow;
+		double f = (curHigh * 0.5)+curLow;
+		double sf = (curHigh * 0.75)+curLow;
 
-		System.out.println("Last: " + last);
-		System.out.println("Top: " + top);
+		System.out.println("Last: " + curLow);
+		System.out.println("Top: " + curHigh);
 		System.out.println("TF: " + tf);
 		System.out.println("F: " + f);
 		System.out.println("SF: " + sf);
-		if (studentGrade == -1.0) {
+		
+		if (alertfoundornot == -2) {
 			Alert alert = new Alert(AlertType.INFORMATION, "No Grades Found for this particular student!");
 			alert.showAndWait();
 			System.out.println("Fail");
-			// error message
 
-		} else if (studentGrade == last) {
-			zeropercentile();
-		} else if (studentGrade == top) {
-			hundredpercentile();
-			displayFeedback();
-		} else if (studentGrade <= tf && studentGrade != 0) {
-			twentyfivepercentile();
-			displayFeedback();
-		} else if (studentGrade > tf && studentGrade <= sf && studentGrade != 0) {
-			fiftypercentile();
-			displayFeedback();
-		} else if (studentGrade > sf && studentGrade < top && studentGrade != 0) {
-			seventyfivepercentile();
-			displayFeedback();
+		} else {
+			if (studentGrade == curHigh) {
+				hundredpercentile();
+				displayFeedback();
+			} else if (studentGrade <= tf && studentGrade != 0) {
+				twentyfivepercentile();
+				displayFeedback();
+			} else if (studentGrade > tf && studentGrade <= sf && studentGrade != 0) {
+				fiftypercentile();
+				displayFeedback();
+			} else if (studentGrade > sf && studentGrade < curHigh && studentGrade != 0) {
+				seventyfivepercentile();
+				displayFeedback();
+			} 
+			
+			if (StartButton.isVisible()) {
+				StartButton.setVisible(false);
+			}
 		}
-		if (StartButton.isVisible()) {
-			StartButton.setVisible(false);
-		}
+
 	}
+
 
 	public void ReplayMe() {
 		ShootSlingshot();
