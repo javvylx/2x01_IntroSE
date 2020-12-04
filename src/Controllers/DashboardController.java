@@ -109,7 +109,7 @@ public class DashboardController implements Initializable {
 		String id = ct.getText();
 		User ul = new Lecturer();
 		String name = ul.getNameByID(id);
-		calculateStats("T01");
+//		calculateStats("T01");
 		welcomeBtn.setText("Welcome, " + name);
 		Component comp = new Component();
 		ArrayList<Component> compAL = comp.retrieveAllComponents();

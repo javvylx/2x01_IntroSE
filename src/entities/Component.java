@@ -290,4 +290,62 @@ public class Component implements IComponent{
 		totalGrade = totalGrade/totalWeightage * 100;
 		return totalGrade;
 	}
+
+	public double getStudentGrade(String userid, String comp_name) {
+		double gradeValue = 0.00;
+		ResultSet rs = null;
+		MySQLConnection db = new MySQLConnection();
+		String dbQuery;
+		PreparedStatement pstmt;
+		// step 1 - connect to database
+		db.getConnection();
+		// step 2 - declare the SQL statement
+		dbQuery = "SELECT c.comp_name,SUM((scm_mark/scm_max_mark)*(subcomp_weight/100)) as overallPerc FROM 2x01_db.component c INNER JOIN 2x01_db.subcomponent sc ON c.comp_id = sc.comp_id INNER JOIN 2x01_db.subcomponent_mark scm ON sc.subcomp_id = scm.scm_subcomp_id WHERE scm.scm_stu_id = ? AND c.comp_name = ?;";
+		pstmt = db.getPreparedStatement(dbQuery);
+		// step 3 - execute query
+		try {
+			pstmt.setString(1,userid);
+			pstmt.setString(2,comp_name);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				gradeValue = rs.getDouble("overallPerc");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// step 4 - close connection
+		db.terminate();
+		System.out.println(gradeValue);
+		return gradeValue;
+	}
+	
+	public String gradeValueToGradeChar(Double grade) {
+		String result = "U";
+		System.out.println(grade);
+		if(grade >= 0.9 && 1 >= grade) {
+			result = "A";
+		}else if(0.87<=grade && grade<=0.89) {
+			result = "A-";
+		}else if(0.84<=grade && grade<=0.86) {
+			result = "B+";
+		}else if(0.80<=grade && grade<=0.83) {
+			result = "B";
+		}else if(0.77<=grade && grade<=0.79) {
+			result = "B-";
+		}else if(0.74<=grade && grade<=0.76) {
+			result = "C+";
+		}else if(0.70<=grade && grade<=0.73) {
+			result = "C";
+		}else if(0.67<=grade && grade<=0.69) {
+			result = "C-";
+		}else if(0.64<=grade && grade<=0.66) {
+			result = "D+";
+		}else if(0.60<=grade && grade<=0.63) {
+			result = "D";
+		}else {
+			result = "F";
+		}
+		return result;
+	}
 }
+

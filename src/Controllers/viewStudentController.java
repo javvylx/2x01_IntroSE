@@ -163,10 +163,11 @@ public class viewStudentController implements Initializable {
 		    row.setOnMouseClicked(event -> {
 		        if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
 		            Student rowData = row.getItem();
-		            System.out.println(rowData.getStu_id());
 		            String studentID = rowData.getStu_id();
 		            Node[] nodesCreate  = new Node[3];
 					try {
+			    		Component_feedback cfb = new Component_feedback();
+			    		Subcomponent_marks scm = new Subcomponent_marks();
 						nodesCreate[0] = FXMLLoader.load(getClass().getResource("/Templates/lecturerAddFeedback.fxml"));
 						Text studenNametxt = (Text) nodesCreate[0].lookup("#studenNametxt");
 						Text studentGradetxt = (Text) nodesCreate[0].lookup("#studentGradetxt");
@@ -176,38 +177,71 @@ public class viewStudentController implements Initializable {
 						ObservableList<String> locn = c.retrieveComponentName();
 						componentSelectcmb.setItems(locn);
 						componentSelectcmb.getSelectionModel().select(locn.get(0));
+			    		String tempid = c.retrieveIDByName(locn.get(0));
+						studentGradetxt.setText(c.gradeValueToGradeChar(c.getStudentGrade(studentID, locn.get(0))));
+						Text titlelbl = (Text)nodesCreate[0].lookup("#titlelbl");
 						TextArea feedbacktxtarea =(TextArea) nodesCreate[0].lookup("#feedbacktxtarea");
+			    		feedbacktxtarea.setText(cfb.retrieveFeedbackViaID(tempid, rowData.getStu_id()));
+						String feedback = cfb.retrieveFeedbackViaID(tempid, rowData.getStu_id());
+						Button addFeedbackBtn = (Button) nodesCreate[0].lookup("#addFeedbackBtn");
 						componentSelectcmb.valueProperty().addListener((obs, oldItem, newItem) -> {
 							if(oldItem != newItem) {
+								String checkFeedback = cfb.retrieveFeedbackViaID(c.retrieveIDByName(newItem), rowData.getStu_id());
 					    		ArrayList<Component> compAL = c.retrieveAllComponents();
-					    		String csa = c.retrieveIDByName(newItem);
-					    		Component ca = c.retrieveComponentByID(csa);
-					    		ca.populateSubComponentList();
-					    		studentGradetxt.setText(Double.toString(ca.getGrade(rowData.getStu_id())));
+					    		studentGradetxt.setText(c.gradeValueToGradeChar(c.getStudentGrade(studentID, newItem)));
+					    		String compid = c.retrieveIDByName(newItem);
+					    		feedbacktxtarea.setText(checkFeedback);
+								System.out.println(checkFeedback+"Check feedback");
+					    		if(checkFeedback == "") {
+						    		feedbacktxtarea.setText(cfb.retrieveFeedbackViaID(compid, rowData.getStu_id()));
+						    		addFeedbackBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+										@Override
+										public void handle(MouseEvent arg0) {
+											// TODO Auto-generated method stub
+											Alert alert = new Alert(AlertType.CONFIRMATION, "Confirm? ", ButtonType.YES, ButtonType.CANCEL);
+											alert.showAndWait();
+											if (alert.getResult() == ButtonType.YES) {
+												String feedback = feedbacktxtarea.getText();
+												String stu_id = rowData.getStu_id();
+												String comp_name = componentSelectcmb.getSelectionModel().getSelectedItem();
+												String comp_id = c.retrieveIDByName(comp_name);
+												Component_feedback cfb = new Component_feedback();
+												if(cfb.createStudentFeedback(stu_id, comp_id, feedback)) {
+													Stage stage = (Stage) addFeedbackBtn.getScene().getWindow();
+												    stage.close();
+												    Alert a = new Alert(AlertType.INFORMATION, "Successfully made feedback!");
+													a.showAndWait();
+												}
+											}
+										}
+									});
+					    		}else {
+					    			addFeedbackBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+										@Override
+										public void handle(MouseEvent arg0) {
+											// TODO Auto-generated method stub
+											Alert alert = new Alert(AlertType.CONFIRMATION, "Confirm? ", ButtonType.YES, ButtonType.CANCEL);
+											alert.showAndWait();
+											if (alert.getResult() == ButtonType.YES) {
+												String feedback = feedbacktxtarea.getText();
+												String stu_id = rowData.getStu_id();
+												String comp_name = componentSelectcmb.getSelectionModel().getSelectedItem();
+												String comp_id = c.retrieveIDByName(comp_name);
+												Component_feedback cfb = new Component_feedback();
+												
+												if(cfb.updateFeedback(comp_id,stu_id , feedback)) {
+													Stage stage = (Stage) addFeedbackBtn.getScene().getWindow();
+												    stage.close();
+												    Alert a = new Alert(AlertType.INFORMATION, "Successfully made feedback!");
+													a.showAndWait();
+												}
+											}
+										}
+									});
+					    		}
 							}
 						});
-						Button addFeedbackBtn = (Button) nodesCreate[0].lookup("#addFeedbackBtn");
-						addFeedbackBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
-							@Override
-							public void handle(MouseEvent arg0) {
-								// TODO Auto-generated method stub
-								Alert alert = new Alert(AlertType.CONFIRMATION, "Confirm? ", ButtonType.YES, ButtonType.CANCEL);
-								alert.showAndWait();
-								if (alert.getResult() == ButtonType.YES) {
-									String feedback = feedbacktxtarea.getText();
-									String stu_id = rowData.getStu_id();
-									String comp_name = componentSelectcmb.getSelectionModel().getSelectedItem();
-									String comp_id = c.retrieveIDByName(comp_name);
-									Component_feedback cfb = new Component_feedback();
-									if(cfb.createStudentFeedback(stu_id, comp_id, feedback)==true) {
-										Stage stage = (Stage) addFeedbackBtn.getScene().getWindow();
-									    stage.close();
-									    Alert a = new Alert(AlertType.INFORMATION, "Successfully made feedback!");
-										a.showAndWait();
-									}
-								}
-							}
-						});
+						
 						Stage stage = new Stage();
 						stage.initModality(Modality.APPLICATION_MODAL);
 						stage.initOwner(mainStage.getScene().getWindow());
