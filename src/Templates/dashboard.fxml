@@ -15,31 +15,22 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="mainStage" maxHeight="-Infinity"	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"	prefHeight="600.0" prefWidth="1080"	style="-fx-background-color: #96CAFF;"	xmlns="http://javafx.com/javafx/11.0.1"	xmlns:fx="http://javafx.com/fxml/1"	fx:controller="Controllers.DashboardController">
+<AnchorPane fx:id="mainStage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1080" style="-fx-background-color: #96CAFF;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.DashboardController">
 	<children>
-		<Pane id="dashboardPane" fx:id="dashboardPane" prefHeight="600.0"
-			prefWidth="1080.0" style="visibility: true;">
+		<Pane id="dashboardPane" fx:id="dashboardPane" prefHeight="600.0" prefWidth="1080.0" style="visibility: true;">
 			<children>
-				<StackPane layoutX="257.0" prefHeight="600.0"
-					prefWidth="823.0">
+				<StackPane layoutX="257.0" prefHeight="600.0" prefWidth="823.0">
 					<children>
-						<Pane fx:id="lViewStudentsPane" prefHeight="635.0"
-							prefWidth="823.0" style="visibility: false;">
+						<Pane fx:id="lViewStudentsPane" prefHeight="635.0" prefWidth="823.0" style="visibility: false;">
 							<StackPane.margin>
 								<Insets bottom="10.0" />
 							</StackPane.margin>
 						</Pane>
-						<Pane fx:id="lManageCPane" prefHeight="200.0"
-							prefWidth="200.0"
-							style="-fx-background-color: #FFFFFF; visibility: false;">
+						<Pane fx:id="lManageCPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF; visibility: false;">
 							<children>
-								<VBox prefHeight="600.0" prefWidth="822.0"
-									style="-fx-background-color: #FFFFFF;">
+								<VBox prefHeight="600.0" prefWidth="822.0" style="-fx-background-color: #FFFFFF;">
 									<children>
-										<Text id="pageHeader" strokeType="OUTSIDE"
-											strokeWidth="0.0"
-											style="-fx-padding: 10px; -fx-border-insets: 10px; -fx-background-insets: 10px;"
-											text="Manage Components" wrappingWidth="483">
+										<Text id="pageHeader" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-padding: 10px; -fx-border-insets: 10px; -fx-background-insets: 10px;" text="Manage Components" wrappingWidth="483">
 											<font>
 												<Font name="Arial" size="38.0" />
 											</font>
@@ -47,8 +38,7 @@
 												<Insets left="30.0" top="20.0" />
 											</VBox.margin>
 										</Text>
-										<Text id="siteMap" strokeType="OUTSIDE" strokeWidth="0.0"
-											text="Site Map" wrappingWidth="429.33673095703125">
+										<Text id="siteMap" strokeType="OUTSIDE" strokeWidth="0.0" text="Site Map" wrappingWidth="429.33673095703125">
 											<VBox.margin>
 												<Insets bottom="5.0" left="30.0" top="10.0" />
 											</VBox.margin>
@@ -58,11 +48,7 @@
 											<children>
 												<HBox prefHeight="58.0" prefWidth="822.0">
 													<children>
-														<Button fx:id="btnAssWeightage"
-															mnemonicParsing="false" onAction="#weightageMethod"
-															prefHeight="30.0" prefWidth="125.0"
-															stylesheets="@/CSS/application.css"
-															text="Assign Weightage">
+														<Button fx:id="btnAssWeightage" mnemonicParsing="false" onAction="#weightageMethod" prefHeight="30.0" prefWidth="125.0" stylesheets="@/CSS/application.css" text="Assign Weightage">
 															<HBox.margin>
 																<Insets left="688.0" top="5.0" />
 															</HBox.margin>
@@ -71,26 +57,22 @@
 												</HBox>
 												<HBox prefHeight="18.0" prefWidth="822.0">
 													<children>
-														<Text strokeType="OUTSIDE" strokeWidth="0.0"
-															text="ColumnName">
+														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="ColumnName">
 															<HBox.margin>
 																<Insets left="60.0" right="30.0" />
 															</HBox.margin>
 														</Text>
-														<Text strokeType="OUTSIDE" strokeWidth="0.0"
-															text="ColumnName1">
+														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="ColumnName1">
 															<HBox.margin>
 																<Insets left="60.0" />
 															</HBox.margin>
 														</Text>
-														<Text strokeType="OUTSIDE" strokeWidth="0.0"
-															text="ColumnName2">
+														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="ColumnName2">
 															<HBox.margin>
 																<Insets left="60.0" />
 															</HBox.margin>
 														</Text>
-														<Text strokeType="OUTSIDE" strokeWidth="0.0"
-															text="ColumnName3">
+														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="ColumnName3">
 															<HBox.margin>
 																<Insets left="50.0" />
 															</HBox.margin>
@@ -99,12 +81,9 @@
 												</HBox>
 												<ScrollPane prefHeight="463.0" prefWidth="822.0">
 													<content>
-														<VBox fx:id="componentVB" prefHeight="446.0"
-															prefWidth="808.0" spacing="5.0"
-															style="-fx-background-color: #FFFFFF;">
+														<VBox fx:id="componentVB" prefHeight="446.0" prefWidth="808.0" spacing="5.0" style="-fx-background-color: #FFFFFF;">
 															<padding>
-																<Insets bottom="5.0" left="5.0" right="5.0"
-																	top="5.0" />
+																<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 															</padding>
 														</VBox>
 													</content>
@@ -115,16 +94,11 @@
 								</VBox>
 							</children>
 						</Pane>
-						<Pane fx:id="lHomePagePane" prefHeight="200.0"
-							prefWidth="200.0" style="visibility: true;">
+						<Pane fx:id="lHomePagePane" prefHeight="200.0" prefWidth="200.0" style="visibility: true;">
 							<children>
-								<VBox prefHeight="600.0" prefWidth="822.0"
-									style="-fx-background-color: #FFFFFF;">
+								<VBox prefHeight="600.0" prefWidth="822.0" style="-fx-background-color: #FFFFFF;">
 									<children>
-										<Text id="pageHeader" strokeType="OUTSIDE"
-											strokeWidth="0.0"
-											style="-fx-padding: 10px; -fx-border-insets: 10px; -fx-background-insets: 10px;"
-											text="Lorem Ipsum" wrappingWidth="483">
+										<Text id="pageHeader" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-padding: 10px; -fx-border-insets: 10px; -fx-background-insets: 10px;" text="Lorem Ipsum" wrappingWidth="483">
 											<font>
 												<Font name="Arial" size="38.0" />
 											</font>
@@ -132,60 +106,74 @@
 												<Insets left="30.0" top="20.0" />
 											</VBox.margin>
 										</Text>
-										<Text id="siteMap" strokeType="OUTSIDE" strokeWidth="0.0"
-											text="Site Map" wrappingWidth="429.33673095703125">
+										<Text id="siteMap" strokeType="OUTSIDE" strokeWidth="0.0" text="Site Map" wrappingWidth="429.33673095703125">
 											<VBox.margin>
 												<Insets bottom="5.0" left="30.0" top="10.0" />
 											</VBox.margin>
 										</Text>
 										<Separator prefHeight="0.0" prefWidth="822.0" />
-										<HBox prefHeight="503.0" prefWidth="822.0">
-											<children>
-												<Button mnemonicParsing="false" prefHeight="500.0"
-													prefWidth="551.0" style="-fx-background-color: #FFFFFF;"
-													text="For charts and analysis graph (FOR LECTURER)" />
-												<ScrollPane prefHeight="503.0" prefWidth="273.0">
-													<content>
-														<VBox prefHeight="502.0" prefWidth="256.0" />
-													</content>
-												</ScrollPane>
-											</children>
-										</HBox>
+                              <VBox prefHeight="532.0" prefWidth="822.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Student Statistics Overview">
+                                       <VBox.margin>
+                                          <Insets left="100.0" top="50.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font size="38.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="minLbl" strokeType="OUTSIDE" strokeWidth="0.0" text="Min: ">
+                                       <VBox.margin>
+                                          <Insets left="100.0" top="50.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="maxLbl" strokeType="OUTSIDE" strokeWidth="0.0" text="Max: ">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="100.0" top="25.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <Text fx:id="aveLbl" strokeType="OUTSIDE" strokeWidth="0.0" text="Average: ">
+                                       <VBox.margin>
+                                          <Insets left="100.0" top="25.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="sdLbl" strokeType="OUTSIDE" strokeWidth="0.0" text="Standard Deviation: ">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="100.0" top="25.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
 									</children>
 								</VBox>
 							</children>
 						</Pane>
 					</children>
 				</StackPane>
-				<VBox prefHeight="600.0" prefWidth="257.0"
-					style="-fx-background-color: #3F2B63;">
+				<VBox prefHeight="600.0" prefWidth="257.0" style="-fx-background-color: #3F2B63;">
 					<children>
-						<ImageView fitHeight="150.0" fitWidth="257.0"
-							pickOnBounds="true" preserveRatio="true">
+						<ImageView fitHeight="150.0" fitWidth="257.0" pickOnBounds="true" preserveRatio="true">
 							<image>
 								<Image url="@/images/SIT-Primary-logo-722x407.png" />
 							</image>
 						</ImageView>
-						<Button fx:id="welcomeBtn" mnemonicParsing="false"
-							prefHeight="46.0" prefWidth="258.0"
-							style="-fx-background-color: #3F2B63;" styleClass="navbut"
-							text="Welcome, " textFill="WHITE" />
-						<Button id="btnHome" fx:id="btnHome"
-							mnemonicParsing="false" onAction="#navBar" prefHeight="46.0"
-							prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Home"
-							textFill="WHITE" />
-						<Button id="btnMC" fx:id="btnManageCom"
-							mnemonicParsing="false" onAction="#navBar" prefHeight="46.0"
-							prefWidth="258.0" stylesheets="@/CSS/sideNav.css"
-							text="Manage Components" textFill="WHITE" />
-						<Button id="btnVS" fx:id="btnViewStudent"
-							mnemonicParsing="false" onAction="#navBar" prefHeight="46.0"
-							prefWidth="258.0" stylesheets="@/CSS/sideNav.css"
-							text="View Students" textFill="WHITE" />
-						<Button id="btnSO" fx:id="btnSignOut"
-							mnemonicParsing="false" onAction="#navBar" prefHeight="46.0"
-							prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Sign Out"
-							textFill="WHITE" />
+						<Button fx:id="welcomeBtn" mnemonicParsing="false" prefHeight="46.0" prefWidth="258.0" style="-fx-background-color: #3F2B63;" styleClass="navbut" text="Welcome, " textFill="WHITE" />
+						<Button id="btnHome" fx:id="btnHome" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Home" textFill="WHITE" />
+						<Button id="btnMC" fx:id="btnManageCom" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Manage Components" textFill="WHITE" />
+						<Button id="btnVS" fx:id="btnViewStudent" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="View Students" textFill="WHITE" />
+						<Button id="btnSO" fx:id="btnSignOut" mnemonicParsing="false" onAction="#navBar" prefHeight="46.0" prefWidth="258.0" stylesheets="@/CSS/sideNav.css" text="Sign Out" textFill="WHITE" />
 						<Label fx:id="pid" text="  " />
 					</children>
 				</VBox>

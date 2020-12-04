@@ -79,6 +79,7 @@ public class studentViewComp implements Initializable {
 			while (rs.next()) {
 				Component cp = new Component();
 				Component component = cp.convertToComponent(rs);
+				component.populateSubComponentList();
 				compAL.add(component);
 				
 			}

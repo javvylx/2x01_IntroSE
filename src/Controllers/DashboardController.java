@@ -103,6 +103,19 @@ public class DashboardController implements Initializable {
 	@FXML
 	private Pane lsubComponentPane;
 
+        @FXML
+        private Text minLbl;
+
+        @FXML
+        private Text maxLbl;
+ 
+        @FXML
+        private Text aveLbl;
+
+        @FXML
+        private Text sdLbl;
+
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		CreateText ct = new CreateText();
@@ -232,6 +245,7 @@ public class DashboardController implements Initializable {
 	}
 	
 	public void calculateStats(String class_id) {
+		DecimalFormat df2 = new DecimalFormat("#.##");
 		//calculate mean and SD for all student for all grades
 		//get all the student in the class
 		HashMap<String, Double> studentGradesList = getStudentPerformance(class_id);
@@ -240,24 +254,41 @@ public class DashboardController implements Initializable {
 		//sum all grades and divide by number of student to get mean
 		int studentCount = studentGradesList.size();
 		double totalGrade = 0;
+		
+		//calculate SD from studentGradesList
+		double standardDeviation = 0.0;
+		
 		for(double grade : studentGradesList.values()) {
 			totalGrade += grade;
 		}
 		
 		double average = totalGrade / studentCount;
 		
-		//calculate SD from studentGradesList
-		double standardDeviation = 0.0;
-
+		//calculate Min and Max
+        double min = 1000;
+        double max = 0;
+		
         for(double num: studentGradesList.values()) {
-            standardDeviation += Math.pow(num - average, 2);
+        	if(num < min) {
+        		min = num;
+        	}
+        	
+        	if (num > max) {
+        		max = num;
+        	}
+        	
+        	standardDeviation += Math.pow(num - average, 2);
         }
 
         double SD = Math.sqrt(standardDeviation/studentCount);
-		
+        
+        minLbl.setText(minLbl.getText()+df2.format(min));
+        maxLbl.setText(maxLbl.getText()+df2.format(max));
+        sdLbl.setText(sdLbl.getText()+df2.format(SD));
+        aveLbl.setText(aveLbl.getText()+df2.format(average));
+        
         System.out.println("Average: "+average+" Standard Deviation: "+SD);	
 	}
-
 	public void navBar(ActionEvent actionEvent) {
 		if (actionEvent.getSource() == btnHome) {
 			Parent dashboard;
